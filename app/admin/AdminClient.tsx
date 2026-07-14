@@ -107,6 +107,12 @@ export function AdminClient({ authed, customers, licenses, dbError }: Props) {
   const [deviceBusy, setDeviceBusy] = useState(false);
   const [deviceMsg, setDeviceMsg] = useState<string | null>(null);
   const [limitDrafts, setLimitDrafts] = useState<Record<string, number>>({});
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  function goTab(next: Tab) {
+    setTab(next);
+    setSidebarOpen(false);
+  }
 
   const filteredLicenses = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -360,7 +366,13 @@ export function AdminClient({ authed, customers, licenses, dbError }: Props) {
 
   return (
     <div className="admin-root">
-      <div className="admin-shell">
+      <div className={`admin-shell${sidebarOpen ? " nav-open" : ""}`}>
+        <button
+          type="button"
+          className="admin-scrim"
+          aria-label="Close menu"
+          onClick={() => setSidebarOpen(false)}
+        />
         <aside className="admin-aside">
           <div className="admin-aside-brand">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -384,7 +396,7 @@ export function AdminClient({ authed, customers, licenses, dbError }: Props) {
                 key={id}
                 type="button"
                 className={tab === id ? "is-active" : undefined}
-                onClick={() => setTab(id)}
+                onClick={() => goTab(id)}
               >
                 <span>{label}</span>
                 {count != null ? (
@@ -402,9 +414,22 @@ export function AdminClient({ authed, customers, licenses, dbError }: Props) {
 
         <div className="admin-stage">
           <header className="admin-topbar">
-            <div>
-              <h1>{meta.title}</h1>
-              <p>{meta.subtitle}</p>
+            <div className="admin-topbar-left">
+              <button
+                type="button"
+                className="admin-menu-btn"
+                aria-expanded={sidebarOpen}
+                aria-label="Open menu"
+                onClick={() => setSidebarOpen((v) => !v)}
+              >
+                <span />
+                <span />
+                <span />
+              </button>
+              <div>
+                <h1>{meta.title}</h1>
+                <p>{meta.subtitle}</p>
+              </div>
             </div>
             <div className="admin-topbar-actions">
               <span className="admin-badge">Admin</span>
@@ -455,7 +480,7 @@ export function AdminClient({ authed, customers, licenses, dbError }: Props) {
                     <button
                       type="button"
                       className="admin-btn admin-btn-sm"
-                      onClick={() => setTab("licenses")}
+                      onClick={() => goTab("licenses")}
                     >
                       Manage licenses
                     </button>

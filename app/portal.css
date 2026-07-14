@@ -14,8 +14,68 @@
 }
 
 .portal {
-  padding-top: 48px;
+  padding-top: clamp(28px, 6vw, 48px);
+  padding-bottom: 48px;
   max-width: 560px;
+  width: 100%;
+}
+
+.portal-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-page main {
+  flex: 1;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+.portal-page footer.portal-foot {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 18px 24px 32px;
+  color: var(--mist);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--line);
+  width: 100%;
+}
+
+.portal-page footer.portal-foot a {
+  color: var(--chalk);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 860px) {
+  .portal-page main {
+    padding: 0 16px 48px;
+  }
+
+  .portal-page footer.portal-foot {
+    padding: 16px 16px 28px;
+  }
+
+  .license-card-top {
+    flex-wrap: wrap;
+  }
+
+  .license-key-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .license-key-row .btn {
+    width: 100%;
+  }
+
+  .portal-form .btn {
+    width: 100%;
+    align-self: stretch;
+  }
 }
 
 .portal h1 {

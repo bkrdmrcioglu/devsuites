@@ -85,7 +85,7 @@ export function LicensesClient({ email, licenses, dbError }: Props) {
   }
 
   return (
-    <>
+    <div className="portal-page">
       <div className="atmosphere" aria-hidden="true" />
       <SiteHeader
         current="licenses"
@@ -96,11 +96,6 @@ export function LicensesClient({ email, licenses, dbError }: Props) {
               className="nav-cta"
               onClick={onLogout}
               disabled={busy}
-              style={{
-                border: "none",
-                cursor: "pointer",
-                font: "inherit",
-              }}
             >
               Sign out
             </button>
@@ -201,6 +196,9 @@ export function LicensesClient({ email, licenses, dbError }: Props) {
           )}
         </section>
       </main>
-    </>
+      <footer className="portal-foot">
+        DevSuites license portal · <a href="/">Back to site</a>
+      </footer>
+    </div>
   );
 }

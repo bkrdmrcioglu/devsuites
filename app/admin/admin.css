@@ -1,32 +1,35 @@
 /* Admin console — independent of marketing site chrome */
 
 .admin-root {
-  --ad-bg: #0b0d10;
-  --ad-surface: #12151a;
-  --ad-panel: #181c23;
-  --ad-elevated: #1e2430;
-  --ad-line: rgba(255, 255, 255, 0.08);
+  --ad-bg: #0a0c0f;
+  --ad-surface: #10141a;
+  --ad-panel: #161b24;
+  --ad-elevated: #1c2330;
+  --ad-line: rgba(255, 255, 255, 0.075);
   --ad-line-strong: rgba(255, 255, 255, 0.14);
-  --ad-text: #e8eaed;
+  --ad-text: #edf0f5;
   --ad-muted: #9aa3b2;
   --ad-faint: #6b7380;
-  --ad-accent: #5b8cff;
-  --ad-accent-soft: rgba(91, 140, 255, 0.14);
+  --ad-accent: #6b94ff;
+  --ad-accent-soft: rgba(107, 148, 255, 0.14);
   --ad-ok: #3dcd8d;
   --ad-ok-soft: rgba(61, 205, 141, 0.12);
   --ad-warn: #e0a03c;
   --ad-warn-soft: rgba(224, 160, 60, 0.14);
   --ad-danger: #e85d6a;
   --ad-danger-soft: rgba(232, 93, 106, 0.12);
-  --ad-radius: 10px;
-  --ad-sidebar: 232px;
+  --ad-radius: 12px;
+  --ad-sidebar: 240px;
   --ad-font: "IBM Plex Sans", system-ui, sans-serif;
   --ad-mono: "IBM Plex Mono", ui-monospace, monospace;
 
   min-height: 100vh;
-  background: var(--ad-bg);
+  background:
+    radial-gradient(900px 420px at 0% -10%, rgba(107, 148, 255, 0.08), transparent 55%),
+    var(--ad-bg);
   color: var(--ad-text);
   font-family: var(--ad-font);
+  -webkit-font-smoothing: antialiased;
 }
 
 .admin-root *,
@@ -652,21 +655,103 @@
   padding: 5px 7px;
 }
 
+.admin-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.admin-menu-btn {
+  display: none;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  border: 1px solid var(--ad-line);
+  background: var(--ad-elevated);
+  padding: 0;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-menu-btn span {
+  display: block;
+  width: 15px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ad-text);
+}
+
+.admin-scrim {
+  display: none;
+}
+
+.admin-panel-head {
+  flex-wrap: wrap;
+}
+
+.admin-devices-head {
+  flex-wrap: wrap;
+}
+
+.admin-table-wrap {
+  -webkit-overflow-scrolling: touch;
+}
+
 @media (max-width: 960px) {
   .admin-shell {
     grid-template-columns: 1fr;
   }
 
+  .admin-menu-btn {
+    display: inline-flex;
+  }
+
+  .admin-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .admin-shell.nav-open .admin-scrim {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
   .admin-aside {
-    position: static;
-    height: auto;
-    border-right: 0;
-    border-bottom: 1px solid var(--ad-line);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    width: min(280px, 86vw);
+    height: 100vh;
+    height: 100dvh;
+    border-right: 1px solid var(--ad-line);
+    border-bottom: 0;
+    transform: translateX(-105%);
+    transition: transform 0.22s ease;
+    box-shadow: 18px 0 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .admin-shell.nav-open .admin-aside {
+    transform: translateX(0);
   }
 
   .admin-nav {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-direction: column;
+    flex-wrap: nowrap;
   }
 
   .admin-stats {
@@ -676,17 +761,61 @@
   .admin-form-row {
     grid-template-columns: 1fr;
   }
+
+  .admin-topbar p {
+    display: none;
+  }
+
+  .admin-panel-head {
+    align-items: stretch;
+  }
+
+  .admin-panel-head .admin-search {
+    width: 100%;
+  }
+
+  .admin-devices-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-device {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-device .admin-btn {
+    width: 100%;
+  }
 }
 
 @media (max-width: 560px) {
   .admin-content,
   .admin-topbar,
   .admin-footer {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 14px;
+    padding-right: 14px;
   }
 
   .admin-stats {
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .admin-badge {
+    display: none;
+  }
+
+  .admin-footer {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .admin-login {
+    padding: 16px;
+  }
+
+  .admin-login-card {
+    padding: 22px 18px;
   }
 }
+

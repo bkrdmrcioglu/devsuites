@@ -16,20 +16,23 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=2" />
+  <link rel="stylesheet" href="../styles.css?v=3" />
 </head>
-<body>
+<body class="page-devcheck">
   <div class="atmosphere" aria-hidden="true"></div>
   <header class="top">
     <a class="brand" href="../">
       <img src="../assets/mark.png" width="28" height="28" alt="" />
       DevSuites
     </a>
-    <nav>
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <span></span><span></span>
+    </button>
+    <nav id="site-nav">
       <a href="../devdock/">DevDock</a>
       <a href="../devmail/">DevMail</a>
       <a href="../devsql/">DevSQL</a>
-      <a href="../devcheck/">DevCheck</a>
+      <a href="../devcheck/" aria-current="page">DevCheck</a>
       <a href="#download" class="nav-cta">Download</a>
     </nav>
   </header>
@@ -46,8 +49,14 @@
         explains what, why, and how to fix.
       </p>
       <div class="cta-row reveal delay-3">
-        <a class="btn primary" href="https://github.com/bkrdmrcioglu/devcheck-site/releases/download/v0.2.3/DevCheck-0.2.3.zip">Download for Mac</a>
-        <a class="btn ghost" href="https://devcheck.lemonsqueezy.com" rel="noopener">Buy Pro — $19</a>
+        <a class="btn primary" href="https://github.com/bkrdmrcioglu/devcheck-site/releases/download/v0.2.3/DevCheck-0.2.3.zip">
+          <svg class="btn-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l4-4m-4 4l-4-4M5 19h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download for Mac
+        </a>
+        <a class="btn ghost" href="https://devcheck.lemonsqueezy.com" rel="noopener">
+          <svg class="btn-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16l-1.2 11.2a2 2 0 01-2 1.8H7.2a2 2 0 01-2-1.8L4 7zm4-3h8l1 3H7l1-3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+          Buy Pro — $19
+        </a>
       </div>
       <div class="brew-field reveal delay-3">
         <label class="brew-label" for="brew-cmd">Homebrew</label>
@@ -56,7 +65,7 @@
           <button type="button" class="brew-copy" data-copy-target="brew-cmd">Copy</button>
         </div>
       </div>
-      <p class="fine reveal delay-3">macOS 14+ · Free: Local Shield + 1 Store Prep project · Pro $19 one-time</p>
+      <p class="fine reveal delay-3">macOS 14+ · Free: Local Shield + 1 Store Prep project · Pro $19 one-time · Notarized</p>
     </section>
 
     <section class="shot reveal delay-4" aria-label="Product preview">
@@ -65,22 +74,51 @@
           <span></span><span></span><span></span>
           <p>DevCheck — Local Shield · Store Prep · Code Guard</p>
         </div>
-        <div class="shot-body">
+        <div class="shot-body shot-body-rich">
           <aside>
             <p class="aside-label">Tools</p>
-            <div class="row on"><i></i> Local Shield</div>
-            <div class="row"><i></i> Store Prep</div>
-            <div class="row"><i></i> Code Guard</div>
-            <div class="row"><i></i> Grade A− pending CSP</div>
+            <div class="row on">
+              <svg class="row-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z" stroke="currentColor" stroke-width="1.8"/></svg>
+              Local Shield
+            </div>
+            <div class="row">
+              <svg class="row-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16v12H4V7zm2-3h12l1 3H5l1-3zm3 8h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Store Prep
+            </div>
+            <div class="row">
+              <svg class="row-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4a5 5 0 015 5v1h1a3 3 0 010 6h-1v1a5 5 0 11-10 0v-1H6a3 3 0 010-6h1V9a5 5 0 015-5z" stroke="currentColor" stroke-width="1.8"/></svg>
+              Code Guard
+            </div>
+            <div class="row muted">
+              <svg class="row-ico" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4l2.5 1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              http://127.0.0.1:3000
+            </div>
           </aside>
           <div class="detail">
-            <p class="status"><i class="dot"></i> Loopback only</p>
+            <div class="detail-top">
+              <p class="status"><i class="dot"></i> Loopback only</p>
+              <div class="grade-badge" aria-label="Grade A minus">A−</div>
+            </div>
             <h2>Header grade</h2>
-            <p class="meta">CSP · cookies · CORS · why it matters · copy fix</p>
+            <p class="meta">CSP · cookies · CORS · expand for why + fix</p>
+            <ul class="check-mini" aria-label="Sample checks">
+              <li class="ok">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 12.5l2.5 2.5L16 9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                X-Content-Type-Options
+              </li>
+              <li class="warn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4l9 16H3L12 4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 10v4m0 3h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                Content-Security-Policy weak
+              </li>
+              <li class="miss">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M8 12h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                Permissions-Policy missing
+              </li>
+            </ul>
             <div class="actions">
               <span class="chip accent">Scan</span>
-              <span class="chip">Checklist</span>
-              <span class="chip">Static scan</span>
+              <span class="chip">Copy fix</span>
+              <span class="chip">Baseline</span>
             </div>
             <pre>Blocked: remote hosts rejected</pre>
           </div>
@@ -88,15 +126,73 @@
       </div>
     </section>
 
-    <section id="features" class="section">
+    <section id="pillars" class="section">
       <h2>Three jobs. One Mac app.</h2>
       <p class="section-support">Ship-ready hygiene without turning into a pentest weapon.</p>
-      <dl class="feature-list">
-        <div><dt>Local Shield</dt><dd>securityheaders-style A+→F grades for <code>localhost</code> / <code>127.0.0.1</code> / <code>*.localhost</code> only. Weak checks expand into why + copyable Next/Express/nginx fixes.</dd></div>
-        <div><dt>Store Prep</dt><dd>App Store + Play checklists with how-to-pass guidance, privacy manifest / entitlements audit, diff vs last scan, Markdown/PDF export (Pro).</dd></div>
-        <div><dt>Code Guard</dt><dd>Static XSS / SQL / command / secrets patterns for mobile + web + API projects — educational findings, never live exploit probes.</dd></div>
-        <div><dt>Free + Pro</dt><dd>Free keeps Local Shield + one Store Prep project. Pro ($19 one-time) unlocks unlimited projects, full checklist, and export.</dd></div>
-        <div><dt>Family chrome</dt><dd>Same ink/mint Settings, license, and What’s New as DevDock, DevMail, and DevSQL.</dd></div>
+      <div class="tool-grid">
+        <article class="tool-tile">
+          <div class="tool-ico" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z" stroke="currentColor" stroke-width="1.7"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Local Shield</h3>
+          <p>securityheaders-style A+→F on <code>localhost</code> only. Weak checks expand into why it matters and copyable Next / Express / nginx fixes.</p>
+        </article>
+        <article class="tool-tile">
+          <div class="tool-ico" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 7h16v12H4V7zm2-3h12l1 3H5l1-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Store Prep</h3>
+          <p>App Store + Play checklists with how-to-pass notes, privacy manifest audit, diff vs last scan, Markdown / PDF export (Pro).</p>
+        </article>
+        <article class="tool-tile">
+          <div class="tool-ico" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 4a5 5 0 015 5v1h1a3 3 0 010 6h-1v1a5 5 0 11-10 0v-1H6a3 3 0 010-6h1V9a5 5 0 015-5z" stroke="currentColor" stroke-width="1.7"/><path d="M10 13h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Code Guard</h3>
+          <p>Static XSS / SQL / command / secrets patterns for mobile + web + API. Educational findings — never live exploit probes.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2>Built for the submit week</h2>
+      <p class="section-support">Every finding teaches — not just a red flag.</p>
+      <dl class="feature-list feature-list-icons">
+        <div>
+          <dt>
+            <span class="feat-ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h10M4 18h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+            Guided findings
+          </dt>
+          <dd>Expand any Shield, Store, or Guard hit for <strong>what we found</strong>, <strong>why it matters</strong>, and <strong>how to fix</strong> — plus safer code when it helps.</dd>
+        </div>
+        <div>
+          <dt>
+            <span class="feat-ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z" stroke="currentColor" stroke-width="1.8"/></svg></span>
+            Loopback gate
+          </dt>
+          <dd>Remote hosts are rejected before any request. Only <code>localhost</code> / <code>127.0.0.1</code> / <code>*.localhost</code>.</dd>
+        </div>
+        <div>
+          <dt>
+            <span class="feat-ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M8 7h8M7 11h10M9 15h6M6 4h12v16H6V4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+            App Store + Play
+          </dt>
+          <dd>Toggle store target. Checklist items explain how to pass. Diff shows fixed vs new since last check.</dd>
+        </div>
+        <div>
+          <dt>
+            <span class="feat-ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 7h10v10H7V7zm-3 3H2v8a2 2 0 002 2h8v-2M15 2h2a2 2 0 012 2v8h-2" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+            Free + Pro
+          </dt>
+          <dd>Free keeps Local Shield + one Store Prep project + Code Guard criticals. Pro ($19 one-time) unlocks the rest.</dd>
+        </div>
+        <div>
+          <dt>
+            <span class="feat-ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 018-8h1v3l4-4-4-4v3h-1a11 11 0 100 22 11 11 0 0010.4-7h-3.1A8 8 0 014 12z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+            Family chrome
+          </dt>
+          <dd>Same ink/mint Settings, license, and What’s New as DevDock, DevMail, and DevSQL.</dd>
+        </div>
       </dl>
     </section>
 
@@ -105,7 +201,12 @@
       <p class="section-support">Free for local headers. Pro when you prep many apps.</p>
       <div class="plans">
         <article class="plan">
-          <h3>Free</h3>
+          <div class="plan-head">
+            <span class="plan-ico" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z" stroke="currentColor" stroke-width="1.7"/></svg>
+            </span>
+            <h3>Free</h3>
+          </div>
           <p class="price">$0</p>
           <ul>
             <li>Local Shield (localhost only)</li>
@@ -116,7 +217,12 @@
           <a class="btn ghost" href="https://github.com/bkrdmrcioglu/devcheck-site/releases/download/v0.2.3/DevCheck-0.2.3.zip">Download</a>
         </article>
         <article class="plan featured">
-          <h3>Pro</h3>
+          <div class="plan-head">
+            <span class="plan-ico accent" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3l2.2 6.6H21l-5.4 4 2.1 6.5L12 16.7 6.3 20l2.1-6.5L3 9.6h6.8L12 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Pro</h3>
+          </div>
           <p class="price">$19 <span>one-time</span></p>
           <ul>
             <li>Unlimited Store Prep projects</li>
@@ -131,7 +237,7 @@
 
     <section id="download" class="section">
       <h2>Get DevCheck</h2>
-      <p class="section-support">Notarized Developer ID build once the first release is cut. Homebrew cask or zip. Lemon key activates Pro in Settings.</p>
+      <p class="section-support">Notarized Developer ID build. Homebrew cask or zip. Lemon key activates Pro in Settings.</p>
       <div class="install-block">
         <p class="install-label">Homebrew</p>
         <div class="brew-row">
@@ -141,7 +247,10 @@
       </div>
 
       <div class="cta-row">
-        <a class="btn primary" href="https://github.com/bkrdmrcioglu/devcheck-site/releases/download/v0.2.3/DevCheck-0.2.3.zip">Download for Mac</a>
+        <a class="btn primary" href="https://github.com/bkrdmrcioglu/devcheck-site/releases/download/v0.2.3/DevCheck-0.2.3.zip">
+          <svg class="btn-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0l4-4m-4 4l-4-4M5 19h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download for Mac
+        </a>
         <a class="btn ghost" href="https://devcheck.lemonsqueezy.com" rel="noopener">Buy Pro — $19</a>
       </div>
     </section>
@@ -149,18 +258,48 @@
     <section id="faq" class="section">
       <h2>FAQ</h2>
       <div class="faq-list">
-        <details><summary>Can it scan production URLs?</summary><p>No. Remote hosts are rejected before any request. Only loopback / *.localhost.</p></details>
-        <details><summary>Is this a guarantee of App Store approval?</summary><p>No — it’s a prep aid: checklist + static heuristics inspired by common rejection patterns, not a substitute for Apple’s guidelines.</p></details>
-        <details><summary>Does Code Guard exploit apps?</summary><p>No. It only matches insecure patterns in your local source (sinks, secrets). It never sends attack payloads.</p></details>
-        <details><summary>Free vs Pro?</summary><p>Free: Local Shield + 1 Store Prep project (partial checklist) + Code Guard criticals. Pro ($19 one-time): unlimited projects + full checklist + export + all severities.</p></details>
-        <details><summary>Part of DevSuites?</summary><p>Yes — same family as DevDock ($29), DevMail ($19), and DevSQL ($19) on <a href="../">devsuites.dev</a>.</p></details>
+        <details>
+          <summary>
+            <span class="faq-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z" stroke="currentColor" stroke-width="1.8"/></svg></span>
+            Can it scan production URLs?
+          </summary>
+          <p>No. Remote hosts are rejected before any request. Only loopback / *.localhost.</p>
+        </details>
+        <details>
+          <summary>
+            <span class="faq-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v5m0 3h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+            Is this a guarantee of App Store approval?
+          </summary>
+          <p>No — it’s a prep aid: checklist + static heuristics inspired by common rejection patterns, not a substitute for Apple’s guidelines.</p>
+        </details>
+        <details>
+          <summary>
+            <span class="faq-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 4a5 5 0 015 5v1h1a3 3 0 010 6h-1v1a5 5 0 11-10 0v-1H6a3 3 0 010-6h1V9a5 5 0 015-5z" stroke="currentColor" stroke-width="1.8"/></svg></span>
+            Does Code Guard exploit apps?
+          </summary>
+          <p>No. It only matches insecure patterns in your local source (sinks, secrets). It never sends attack payloads.</p>
+        </details>
+        <details>
+          <summary>
+            <span class="faq-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 7h16l-1.2 11.2a2 2 0 01-2 1.8H7.2a2 2 0 01-2-1.8L4 7z" stroke="currentColor" stroke-width="1.8"/></svg></span>
+            Free vs Pro?
+          </summary>
+          <p>Free: Local Shield + 1 Store Prep project (partial checklist) + Code Guard criticals. Pro ($19 one-time): unlimited projects + full checklist + export + all severities.</p>
+        </details>
+        <details>
+          <summary>
+            <span class="faq-ico" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="8" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><circle cx="16" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M11 12h2" stroke="currentColor" stroke-width="1.8"/></svg></span>
+            Part of DevSuites?
+          </summary>
+          <p>Yes — same family as DevDock ($29), DevMail ($19), and DevSQL ($19) on <a href="../">devsuites.dev</a>.</p>
+        </details>
       </div>
     </section>
 
     <section class="section">
       <h2>More in the suite</h2>
       <p class="section-support">Same ink/mint chrome. Different jobs.</p>
-      <div class="sibs">
+      <div class="sibs sibs-3">
         <a class="sib" href="../devdock/"><img src="../assets/devdock-mark.png" alt="" /><div><h3>DevDock</h3><p>Stacks · ports · workspaces</p></div></a>
         <a class="sib" href="../devmail/"><img src="../assets/devmail-mark.png" alt="" /><div><h3>DevMail</h3><p>Local SMTP · webhooks · Redis</p></div></a>
         <a class="sib" href="../devsql/"><img src="../assets/devsql-mark.png" alt="" /><div><h3>DevSQL</h3><p>SQLite · Postgres · MySQL · Redis</p></div></a>
@@ -173,18 +312,34 @@
   </footer>
   <script src="../script.js"></script>
   <script>
-    document.querySelectorAll(".brew-copy").forEach((btn) => {
-      btn.addEventListener("click", async () => {
-        const input = document.getElementById(btn.getAttribute("data-copy-target"));
-        if (!input) return;
-        try { await navigator.clipboard.writeText(input.value); }
-        catch { input.select(); document.execCommand("copy"); }
-        const prev = btn.textContent;
-        btn.textContent = "Copied";
-        btn.classList.add("copied");
-        setTimeout(() => { btn.textContent = prev; btn.classList.remove("copied"); }, 1200);
+    (function () {
+      const toggle = document.querySelector(".nav-toggle");
+      const nav = document.getElementById("site-nav");
+      if (toggle && nav) {
+        toggle.addEventListener("click", () => {
+          const open = nav.classList.toggle("open");
+          toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        });
+        nav.querySelectorAll("a").forEach((a) => {
+          a.addEventListener("click", () => {
+            nav.classList.remove("open");
+            toggle.setAttribute("aria-expanded", "false");
+          });
+        });
+      }
+      document.querySelectorAll(".brew-copy").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const input = document.getElementById(btn.getAttribute("data-copy-target"));
+          if (!input) return;
+          try { await navigator.clipboard.writeText(input.value); }
+          catch { input.select(); document.execCommand("copy"); }
+          const prev = btn.textContent;
+          btn.textContent = "Copied";
+          btn.classList.add("copied");
+          setTimeout(() => { btn.textContent = prev; btn.classList.remove("copied"); }, 1200);
+        });
       });
-    });
+    })();
   </script>
 </body>
 </html>

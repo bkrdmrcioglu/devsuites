@@ -386,6 +386,90 @@ export async function deactivateDbLicense(opts: {
   return { deactivated: true };
 }
 
+export type LicenseInstanceRow = {
+  instanceId: string;
+  instanceName: string | null;
+  createdAt: string;
+};
+
+export async function listLicenseInstances(
+  licenseKey: string
+): Promise<LicenseInstanceRow[]> {
+  const { rows } = await getPool().query(
+    `SELECT instance_id, instance_name, created_at
+     FROM license_instances
+     WHERE license_key = $1
+     ORDER BY created_at ASC`,
+    [licenseKey]
+  );
+  return rows.map((r) => ({
+    instanceId: String(r.instance_id),
+    instanceName: r.instance_name != null ? String(r.instance_name) : null,
+    createdAt:
+      r.created_at instanceof Date
+        ? r.created_at.toISOString()
+        : String(r.created_at),
+  }));
+}
+
+export async function removeLicenseInstance(opts: {
+  licenseKey: string;
+  instanceId: string;
+}): Promise<{ removed: boolean; error?: string; remaining: number }> {
+  const result = await deactivateDbLicense(opts);
+  if (!result.deactivated) {
+    return {
+      removed: false,
+      error: result.error ?? "not found",
+      remaining: -1,
+    };
+  }
+  const { rows } = await getPool().query(
+    `SELECT COUNT(*)::int AS c FROM license_instances WHERE license_key = $1`,
+    [opts.licenseKey]
+  );
+  return { removed: true, remaining: Number(rows[0]?.c ?? 0) };
+}
+
+export async function resetLicenseDevices(
+  licenseKey: string
+): Promise<{ reset: boolean; removed: number; error?: string }> {
+  const lic = await findLicenseByKey(licenseKey);
+  if (!lic || !lic.licenseKey) {
+    return { reset: false, removed: 0, error: "license_key not found" };
+  }
+  const result = await getPool().query(
+    `DELETE FROM license_instances WHERE license_key = $1`,
+    [lic.licenseKey]
+  );
+  const removed = result.rowCount ?? 0;
+  if (removed > 0) {
+    await getPool().query(
+      `UPDATE licenses SET status = 'inactive' WHERE license_key = $1`,
+      [lic.licenseKey]
+    );
+  }
+  return { reset: true, removed };
+}
+
+export async function updateLicenseActivationLimit(opts: {
+  licenseKey: string;
+  activationLimit: number;
+}): Promise<{ ok: boolean; error?: string }> {
+  const limit = Math.floor(opts.activationLimit);
+  if (!Number.isFinite(limit) || limit < 1 || limit > 100) {
+    return { ok: false, error: "activationLimit must be 1–100" };
+  }
+  const result = await getPool().query(
+    `UPDATE licenses SET activation_limit = $2 WHERE license_key = $1`,
+    [opts.licenseKey, limit]
+  );
+  if ((result.rowCount ?? 0) < 1) {
+    return { ok: false, error: "license_key not found" };
+  }
+  return { ok: true };
+}
+
 function randomInstanceId(): string {
   return `ds_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
 }

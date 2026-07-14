@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DevCheck — Localhost shield + store prep.</title>
+  <meta name="description" content="Native macOS app: securityheaders-style grades on localhost only, plus App Store readiness checklist and static scan." />
+  <meta property="og:title" content="DevCheck" />
+  <meta property="og:description" content="Localhost shield + store prep." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://devsuites.dev/devcheck/" />
+  <meta property="og:image" content="../assets/devcheck-mark.png" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css?v=2" />
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <header class="top">
+    <a class="brand" href="../">
+      <img src="../assets/mark.png" width="28" height="28" alt="" />
+      DevSuites
+    </a>
+    <nav>
+      <a href="../devdock/">DevDock</a>
+      <a href="../devmail/">DevMail</a>
+      <a href="../devsql/">DevSQL</a>
+      <a href="../devcheck/">DevCheck</a>
+      <a href="#download" class="nav-cta">Download</a>
+    </nav>
+  </header>
+  <main>
+
+    <section class="hero product">
+      <a class="suite-chip reveal" href="../"><img src="../assets/mark.png" alt="" /> Part of <strong>DevSuites</strong></a>
+      <img class="hero-mark reveal" src="../assets/devcheck-mark.png" width="72" height="72" alt="DevCheck" />
+      <h1 class="reveal delay-1">DevCheck</h1>
+      <p class="lede reveal delay-2">Localhost shield + store prep.</p>
+      <p class="support reveal delay-2">
+        Grade your local app’s HTTP security headers (never remote hosts), then walk an App Store readiness
+        checklist with a static scan for secrets, ATS, purpose strings, and high-risk rejection patterns.
+      </p>
+      <div class="cta-row reveal delay-3">
+        <a class="btn primary" href="#download">Coming soon</a>
+        <a class="btn ghost" href="https://devcheck.lemonsqueezy.com" rel="noopener">Buy Pro — $19</a>
+      </div>
+      <p class="fine reveal delay-3">macOS 14+ · Free: Local Shield + 1 Store Prep project · Pro $19 one-time</p>
+    </section>
+
+    <section class="shot reveal delay-4" aria-label="Product preview">
+      <div class="shot-frame">
+        <div class="shot-bar">
+          <span></span><span></span><span></span>
+          <p>DevCheck — Local Shield · Store Prep</p>
+        </div>
+        <div class="shot-body">
+          <aside>
+            <p class="aside-label">Tools</p>
+            <div class="row on"><i></i> Local Shield</div>
+            <div class="row"><i></i> Store Prep</div>
+            <div class="row"><i></i> http://127.0.0.1:3000</div>
+            <div class="row"><i></i> Grade A− pending CSP</div>
+          </aside>
+          <div class="detail">
+            <p class="status"><i class="dot"></i> Loopback only</p>
+            <h2>Header grade</h2>
+            <p class="meta">CSP · HSTS · XCTO · Frame · Referrer · Permissions</p>
+            <div class="actions">
+              <span class="chip accent">Scan</span>
+              <span class="chip">Checklist</span>
+              <span class="chip">Static scan</span>
+            </div>
+            <pre>Blocked: remote hosts rejected</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2>Two jobs. One Mac app.</h2>
+      <p class="section-support">Ship-ready hygiene without turning into a pentest weapon.</p>
+      <dl class="feature-list">
+        <div><dt>Local Shield</dt><dd>securityheaders-style A+→F grades for <code>localhost</code> / <code>127.0.0.1</code> / <code>*.localhost</code> only. Remote URLs never leave the gate.</dd></div>
+        <div><dt>Header checks</dt><dd>CSP, HSTS (when HTTPS), X-Content-Type-Options, clickjacking, Referrer-Policy, Permissions-Policy, COOP.</dd></div>
+        <div><dt>Store Prep checklist</dt><dd>Curated App Review readiness items — Safety, Performance, Business, Design, Legal — Pass / Fail / N/A.</dd></div>
+        <div><dt>Static scan</dt><dd>Info.plist purpose strings, ATS arbitrary loads, PrivacyInfo.xcprivacy, secret patterns, IAP restore &amp; account-deletion heuristics.</dd></div>
+        <div><dt>Free + Pro</dt><dd>Free keeps Local Shield + one Store Prep project. Pro ($19 one-time) unlocks unlimited projects and the full checklist.</dd></div>
+        <div><dt>Family chrome</dt><dd>Same ink/mint Settings, license, and What’s New as DevDock, DevMail, and DevSQL.</dd></div>
+      </dl>
+    </section>
+
+    <section id="pricing" class="section">
+      <h2>Simple pricing</h2>
+      <p class="section-support">Free for local headers. Pro when you prep many apps.</p>
+      <div class="plans">
+        <article class="plan">
+          <h3>Free</h3>
+          <p class="price">$0</p>
+          <ul>
+            <li>Local Shield (localhost only)</li>
+            <li>1 Store Prep project</li>
+            <li>Critical checklist items</li>
+            <li>No remote scanning</li>
+          </ul>
+          <a class="btn ghost" href="#download">Coming soon</a>
+        </article>
+        <article class="plan featured">
+          <h3>Pro</h3>
+          <p class="price">$19 <span>one-time</span></p>
+          <ul>
+            <li>Unlimited Store Prep projects</li>
+            <li>Full guideline checklist</li>
+            <li>Lemon Squeezy license</li>
+            <li>Move seats between machines</li>
+          </ul>
+          <a class="btn primary" href="https://devcheck.lemonsqueezy.com" rel="noopener">Buy Pro — $19</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="download" class="section">
+      <h2>Get DevCheck</h2>
+      <p class="section-support">
+        First notarized release is next. For now: open <code>/Volumes/…/DevCheck</code> in Xcode and Run,
+        or wait for the Homebrew cask + zip like the rest of the suite.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="../">Back to suite</a>
+        <a class="btn ghost" href="https://devcheck.lemonsqueezy.com" rel="noopener">Buy Pro — $19</a>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <h2>FAQ</h2>
+      <div class="faq-list">
+        <details><summary>Can it scan production URLs?</summary><p>No. Remote hosts are rejected before any request. Only loopback / *.localhost.</p></details>
+        <details><summary>Is this a guarantee of App Store approval?</summary><p>No — it’s a prep aid: checklist + static heuristics inspired by common rejection patterns, not a substitute for Apple’s guidelines.</p></details>
+        <details><summary>Free vs Pro?</summary><p>Free: Local Shield + 1 Store Prep project (partial checklist). Pro ($19 one-time): unlimited projects + full checklist.</p></details>
+        <details><summary>Part of DevSuites?</summary><p>Yes — same family as DevDock ($29), DevMail ($19), and DevSQL ($19) on <a href="../">devsuites.dev</a>.</p></details>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>More in the suite</h2>
+      <p class="section-support">Same ink/mint chrome. Different jobs.</p>
+      <div class="sibs">
+        <a class="sib" href="../devdock/"><img src="../assets/devdock-mark.png" alt="" /><div><h3>DevDock</h3><p>Stacks · ports · workspaces</p></div></a>
+        <a class="sib" href="../devmail/"><img src="../assets/devmail-mark.png" alt="" /><div><h3>DevMail</h3><p>Local SMTP · webhooks · Redis</p></div></a>
+        <a class="sib" href="../devsql/"><img src="../assets/devsql-mark.png" alt="" /><div><h3>DevSQL</h3><p>SQLite · Postgres · MySQL · Redis</p></div></a>
+      </div>
+    </section>
+
+  </main>
+  <footer>
+    <p>DevCheck · part of <a href="../">DevSuites</a></p>
+  </footer>
+  <script src="../script.js"></script>
+</body>
+</html>

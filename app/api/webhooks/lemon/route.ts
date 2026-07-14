@@ -10,7 +10,13 @@ import {
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  ensureStore();
+  try {
+    await ensureStore();
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Database unavailable";
+    return NextResponse.json({ error: message }, { status: 503 });
+  }
+
   let secret: string;
   try {
     secret = requireConfig().webhookSecret;
@@ -37,7 +43,7 @@ export async function POST(req: Request) {
     (parsed as { meta?: { event_name?: string } } | null)?.meta?.event_name ??
     "unknown";
 
-  insertEvent(eventName, rawBody);
+  await insertEvent(eventName, rawBody);
 
   if (parsed) {
     const summary = summarizeWebhook(eventName, parsed);
@@ -47,7 +53,7 @@ export async function POST(req: Request) {
       eventName.includes("order") ||
       eventName.includes("license")
     ) {
-      insertOrderSummary({ eventName, ...summary });
+      await insertOrderSummary({ eventName, ...summary });
     }
   }
 

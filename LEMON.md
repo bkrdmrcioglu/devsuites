@@ -24,14 +24,16 @@ One store for all four apps. Checkout + webhooks live on the **same Next.js app*
 
 1. `/api/buy/:app` creates Lemon checkout (Admin API key **server-only**) → 302  
 2. Lemon emails license key  
-3. Webhook `https://devsuites.dev/api/webhooks/lemon` (HMAC)  
-4. Mac app Settings → Activate (public License API)
+3. Webhook `https://devsuites.dev/api/webhooks/lemon` (HMAC) → Postgres `events` + `licenses`  
+4. Customer portal: https://devsuites.dev/licenses (email + one license key)  
+5. Mac app Settings → Activate (public License API)
 
 ## Env (Coolify)
 
+- `DATABASE_URL` — Postgres connection string (required)
+- `SESSION_SECRET` — cookie signing (or falls back to `LEMON_WEBHOOK_SECRET`)
 - `LEMON_API_KEY`, `LEMON_STORE_ID`, `LEMON_WEBHOOK_SECRET`
 - `LEMON_VARIANT_DEVDOCK` / `_DEVMAIL` / `_DEVSQL` / `_DEVCHECK`
-- `DATA_DIR=/data` (JSONL files under this folder)
 
 ## Coolify tip
 
@@ -40,8 +42,10 @@ Set build pack to **Dockerfile** (repo root). Nixpacks also works via `nixpacks.
 ## Local mock
 
 ```bash
+# .env.local needs DATABASE_URL
 npm run dev
 open http://127.0.0.1:3000/api/test
+open http://127.0.0.1:3000/licenses
 ```
 
 Never enable `LEMON_MOCK=1` in production.

@@ -8,11 +8,15 @@ export async function GET() {
   if (!isMockMode()) {
     return NextResponse.json({ error: "Enable LEMON_MOCK=1" }, { status: 404 });
   }
-  ensureStore();
+  await ensureStore();
+  const [orders, events] = await Promise.all([
+    listOrders(50),
+    listEvents(20),
+  ]);
   return NextResponse.json({
     mock: true,
-    orders: listOrders(50),
-    events: listEvents(20).map((e) => ({
+    orders,
+    events: events.map((e) => ({
       id: e.id,
       receivedAt: e.receivedAt,
       eventName: e.eventName,

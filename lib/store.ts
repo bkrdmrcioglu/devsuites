@@ -1,5 +1,4 @@
-import { mkdirSync, appendFileSync, readFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
+import { ensureSchema, getPool } from "@/lib/db";
 
 export type StoredEvent = {
   id: number;
@@ -21,60 +20,22 @@ export type StoredOrder = {
   status: string | null;
 };
 
-type Paths = { events: string; orders: string };
-
-let paths: Paths | null = null;
-let eventSeq = 0;
-let orderSeq = 0;
-
-function dataDir(): string {
-  return process.env.DATA_DIR ?? join(process.cwd(), "data");
+export async function ensureStore(): Promise<void> {
+  await ensureSchema();
 }
 
-export function ensureStore(dir = dataDir()): Paths {
-  if (paths) return paths;
-  mkdirSync(dir, { recursive: true });
-  paths = {
-    events: join(dir, "events.jsonl"),
-    orders: join(dir, "orders.jsonl"),
-  };
-  // Resume sequences from existing files
-  eventSeq = countLines(paths.events);
-  orderSeq = countLines(paths.orders);
-  return paths;
+export async function insertEvent(
+  eventName: string,
+  payload: string
+): Promise<void> {
+  await ensureSchema();
+  await getPool().query(
+    `INSERT INTO events (event_name, payload) VALUES ($1, $2)`,
+    [eventName, payload]
+  );
 }
 
-function countLines(file: string): number {
-  if (!existsSync(file)) return 0;
-  const text = readFileSync(file, "utf8");
-  if (!text.trim()) return 0;
-  return text.split("\n").filter((l) => l.trim()).length;
-}
-
-function appendJson(file: string, row: unknown): void {
-  appendFileSync(file, `${JSON.stringify(row)}\n`, "utf8");
-}
-
-function readJsonl<T>(file: string): T[] {
-  if (!existsSync(file)) return [];
-  return readFileSync(file, "utf8")
-    .split("\n")
-    .filter((l) => l.trim())
-    .map((l) => JSON.parse(l) as T);
-}
-
-export function insertEvent(eventName: string, payload: string): void {
-  const p = ensureStore();
-  eventSeq += 1;
-  appendJson(p.events, {
-    id: eventSeq,
-    receivedAt: new Date().toISOString(),
-    eventName,
-    payload,
-  } satisfies StoredEvent);
-}
-
-export function insertOrderSummary(row: {
+export async function insertOrderSummary(row: {
   eventName: string;
   orderId?: string | null;
   email?: string | null;
@@ -83,33 +44,128 @@ export function insertOrderSummary(row: {
   licenseKey?: string | null;
   app?: string | null;
   status?: string | null;
-}): void {
-  const p = ensureStore();
-  orderSeq += 1;
-  appendJson(p.orders, {
-    id: orderSeq,
-    receivedAt: new Date().toISOString(),
-    eventName: row.eventName,
-    orderId: row.orderId ?? null,
-    email: row.email ?? null,
-    productName: row.productName ?? null,
-    variantName: row.variantName ?? null,
-    licenseKey: row.licenseKey ?? null,
-    app: row.app ?? null,
-    status: row.status ?? null,
-  } satisfies StoredOrder);
+}): Promise<void> {
+  const key = row.licenseKey?.trim() || null;
+  if (!key) return;
+
+  await ensureSchema();
+  await getPool().query(
+    `INSERT INTO licenses (
+      event_name, order_id, email, product_name, variant_name,
+      license_key, app, status
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+    ON CONFLICT (license_key) DO UPDATE SET
+      event_name = EXCLUDED.event_name,
+      order_id = COALESCE(EXCLUDED.order_id, licenses.order_id),
+      email = COALESCE(EXCLUDED.email, licenses.email),
+      product_name = COALESCE(EXCLUDED.product_name, licenses.product_name),
+      variant_name = COALESCE(EXCLUDED.variant_name, licenses.variant_name),
+      app = COALESCE(EXCLUDED.app, licenses.app),
+      status = COALESCE(EXCLUDED.status, licenses.status),
+      received_at = now()`,
+    [
+      row.eventName,
+      row.orderId ?? null,
+      row.email?.trim().toLowerCase() ?? null,
+      row.productName ?? null,
+      row.variantName ?? null,
+      key,
+      row.app ?? null,
+      row.status ?? null,
+    ]
+  );
 }
 
-export function listOrders(limit = 50): StoredOrder[] {
-  ensureStore();
-  const rows = readJsonl<StoredOrder>(paths!.orders);
-  return rows.reverse().slice(0, limit);
+function mapLicenseRow(r: {
+  id: string | number;
+  received_at: Date | string;
+  event_name: string;
+  order_id: string | null;
+  email: string | null;
+  product_name: string | null;
+  variant_name: string | null;
+  license_key: string | null;
+  app: string | null;
+  status: string | null;
+}): StoredOrder {
+  const receivedAt =
+    r.received_at instanceof Date
+      ? r.received_at.toISOString()
+      : String(r.received_at);
+  return {
+    id: Number(r.id),
+    receivedAt,
+    eventName: r.event_name,
+    orderId: r.order_id,
+    email: r.email,
+    productName: r.product_name,
+    variantName: r.variant_name,
+    licenseKey: r.license_key,
+    app: r.app,
+    status: r.status,
+  };
 }
 
-export function listEvents(limit = 20): StoredEvent[] {
-  ensureStore();
-  const rows = readJsonl<StoredEvent>(paths!.events);
-  return rows.reverse().slice(0, limit);
+export async function listOrders(limit = 50): Promise<StoredOrder[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query(
+    `SELECT * FROM licenses ORDER BY id DESC LIMIT $1`,
+    [limit]
+  );
+  return rows.map(mapLicenseRow);
+}
+
+export async function listEvents(limit = 20): Promise<StoredEvent[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query(
+    `SELECT id, received_at, event_name, payload
+     FROM events ORDER BY id DESC LIMIT $1`,
+    [limit]
+  );
+  return rows.map(
+    (r: {
+      id: string | number;
+      received_at: Date | string;
+      event_name: string;
+      payload: string;
+    }) => ({
+      id: Number(r.id),
+      receivedAt:
+        r.received_at instanceof Date
+          ? r.received_at.toISOString()
+          : String(r.received_at),
+      eventName: r.event_name,
+      payload: r.payload,
+    })
+  );
+}
+
+export async function findLicensesByEmail(
+  email: string
+): Promise<StoredOrder[]> {
+  await ensureSchema();
+  const normalized = email.trim().toLowerCase();
+  const { rows } = await getPool().query(
+    `SELECT * FROM licenses
+     WHERE lower(email) = $1 AND license_key IS NOT NULL
+     ORDER BY id DESC`,
+    [normalized]
+  );
+  return rows.map(mapLicenseRow);
+}
+
+export async function verifyLicenseLogin(
+  email: string,
+  licenseKey: string
+): Promise<boolean> {
+  await ensureSchema();
+  const { rows } = await getPool().query(
+    `SELECT 1 FROM licenses
+     WHERE lower(email) = $1 AND license_key = $2
+     LIMIT 1`,
+    [email.trim().toLowerCase(), licenseKey.trim()]
+  );
+  return rows.length > 0;
 }
 
 export function summarizeWebhook(

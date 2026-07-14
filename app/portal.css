@@ -1,0 +1,158 @@
+:root {
+  --ink: #0c1014;
+  --panel: #141a20;
+  --elevated: #1a222a;
+  --line: rgba(232, 240, 236, 0.1);
+  --mist: rgba(210, 222, 216, 0.68);
+  --chalk: #eef6f1;
+  --accent: #2ed68c;
+  --accent-dim: rgba(46, 214, 140, 0.14);
+  --warn: #e6b84a;
+  --display: "Syne", sans-serif;
+  --font: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+.portal {
+  padding-top: 48px;
+  max-width: 560px;
+}
+
+.portal h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  letter-spacing: -0.04em;
+  margin: 0 0 12px;
+}
+
+.portal-lede {
+  color: var(--mist);
+  margin: 0 0 28px;
+  font-size: 1.05rem;
+}
+
+.portal-lede strong {
+  color: var(--chalk);
+  font-weight: 600;
+}
+
+.portal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.portal-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--mist);
+}
+
+.portal-form input {
+  background: var(--elevated);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--chalk);
+  font: inherit;
+  padding: 12px 14px;
+}
+
+.portal-form input:focus {
+  outline: 2px solid rgba(46, 214, 140, 0.45);
+  outline-offset: 1px;
+}
+
+.portal-form .btn {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.portal-error {
+  color: #f07178;
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.portal-empty {
+  color: var(--mist);
+}
+
+.license-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.license-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 18px 14px;
+}
+
+.license-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.license-app {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+
+.license-status {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  background: var(--accent-dim);
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.license-meta {
+  margin: 6px 0 0;
+  color: var(--mist);
+  font-size: 0.9rem;
+}
+
+.license-key-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.license-key-row code {
+  flex: 1;
+  min-width: 0;
+  word-break: break-all;
+  background: var(--elevated);
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  font-size: 0.85rem;
+}
+
+.license-date {
+  margin: 12px 0 0;
+  font-size: 0.8rem;
+  color: rgba(210, 222, 216, 0.45);
+}
+
+button.nav-cta {
+  font-family: inherit;
+}

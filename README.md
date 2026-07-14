@@ -1,21 +1,31 @@
 # DevSuites
 
-**https://devsuites.dev** — hosted on Coolify (static site).
+**https://devsuites.dev** — Next.js (marketing `public/` + Lemon API at `/api/*`) on Coolify.
 
-| Path | Page |
-|---|---|
+| Path | What |
+|------|------|
 | `/` | Suite hub |
-| `/devdock/` | DevDock product |
-| `/devmail/` | DevMail product |
-| `/devsql/` | DevSQL product |
+| `/devdock/` … `/devcheck/` | Product pages |
+| `/api/health` | Health |
+| `/api/buy/:app` | Lemon checkout redirect |
+| `/api/webhooks/lemon` | Signed webhooks |
+| `/api/test` | Mock harness (`LEMON_MOCK=1` only) |
 
-## Deploy
-
-Push to `main` → Coolify rebuilds from https://github.com/bkrdmrcioglu/devsuites.git
+## Local
 
 ```bash
-# local preview
-python3 -m http.server 8088
+npm install
+npm run dev          # LEMON_MOCK=1 on :3000
+open http://127.0.0.1:3000/api/test
+npm test             # smoke
 ```
 
-Point `devsuites.dev` DNS at your Coolify host (not GitHub Pages).
+## Deploy (Coolify)
+
+1. Build from repo root **Dockerfile** (Node 22, `output: 'standalone'`)
+2. Domain: **`devsuites.dev`** (no separate api subdomain)
+3. Env: `LEMON_*` secrets; **do not** set `LEMON_MOCK=1` in production
+4. Persist volume → `/data`
+5. Lemon webhook URL: `https://devsuites.dev/api/webhooks/lemon`
+
+See [`LEMON.md`](./LEMON.md).

@@ -68,6 +68,11 @@ nav {
   font-weight: 500;
 }
 
+nav a[aria-current="page"] {
+  color: var(--chalk);
+  font-weight: 600;
+}
+
 .nav-cta {
   color: var(--ink) !important;
   background: var(--accent);
@@ -455,7 +460,6 @@ footer strong { color: var(--chalk); }
 }
 
 @media (max-width: 860px) {
-  nav a:not(.nav-cta) { display: none; }
   .suite-body { grid-template-columns: 1fr; }
   .suite-pane { border-right: 0; border-bottom: 1px solid var(--line); }
   .suite-pane:last-child { border-bottom: 0; }

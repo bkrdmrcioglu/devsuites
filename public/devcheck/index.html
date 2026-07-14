@@ -16,26 +16,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../styles.css?v=3" />
+  <link rel="stylesheet" href="/styles.css?v=5" />
 </head>
 <body class="page-devcheck">
   <div class="atmosphere" aria-hidden="true"></div>
-  <header class="top">
-    <a class="brand" href="../">
-      <img src="../assets/mark.png" width="28" height="28" alt="" />
-      DevSuites
-    </a>
-    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
-      <span></span><span></span>
-    </button>
-    <nav id="site-nav">
-      <a href="../devdock/">DevDock</a>
-      <a href="../devmail/">DevMail</a>
-      <a href="../devsql/">DevSQL</a>
-      <a href="../devcheck/" aria-current="page">DevCheck</a>
-      <a href="#download" class="nav-cta">Download</a>
-    </nav>
-  </header>
+  <div data-site-header data-current="devcheck" data-download="#download"></div>
+  <script src="/site-header.js?v=1"></script>
   <main>
 
     <section class="hero product">
@@ -313,20 +299,6 @@
   <script src="../script.js"></script>
   <script>
     (function () {
-      const toggle = document.querySelector(".nav-toggle");
-      const nav = document.getElementById("site-nav");
-      if (toggle && nav) {
-        toggle.addEventListener("click", () => {
-          const open = nav.classList.toggle("open");
-          toggle.setAttribute("aria-expanded", open ? "true" : "false");
-        });
-        nav.querySelectorAll("a").forEach((a) => {
-          a.addEventListener("click", () => {
-            nav.classList.remove("open");
-            toggle.setAttribute("aria-expanded", "false");
-          });
-        });
-      }
       document.querySelectorAll(".brew-copy").forEach((btn) => {
         btn.addEventListener("click", async () => {
           const input = document.getElementById(btn.getAttribute("data-copy-target"));

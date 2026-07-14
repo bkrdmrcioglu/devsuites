@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { SiteHeader } from "@/components/SiteHeader";
 
 type LicenseRow = {
   id: number;
@@ -86,18 +87,10 @@ export function LicensesClient({ email, licenses, dbError }: Props) {
   return (
     <>
       <div className="atmosphere" aria-hidden="true" />
-      <header className="top">
-        <a className="brand" href="/">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/mark.png" width={28} height={28} alt="" />
-          DevSuites
-        </a>
-        <nav>
-          <a href="/devdock/">DevDock</a>
-          <a href="/devmail/">DevMail</a>
-          <a href="/devsql/">DevSQL</a>
-          <a href="/devcheck/">DevCheck</a>
-          {email ? (
+      <SiteHeader
+        current="licenses"
+        trailing={
+          email ? (
             <button
               type="button"
               className="nav-cta"
@@ -111,13 +104,9 @@ export function LicensesClient({ email, licenses, dbError }: Props) {
             >
               Sign out
             </button>
-          ) : (
-            <a href="/#apps" className="nav-cta">
-              Download
-            </a>
-          )}
-        </nav>
-      </header>
+          ) : undefined
+        }
+      />
 
       <main>
         <section className="portal">

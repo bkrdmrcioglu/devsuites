@@ -1,5 +1,4 @@
-import { DatabaseSync } from "node:sqlite";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, appendFileSync, readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
 export type StoredEvent = {
@@ -22,49 +21,57 @@ export type StoredOrder = {
   status: string | null;
 };
 
-let db: DatabaseSync | null = null;
+type Paths = { events: string; orders: string };
 
-export function ensureStore(
-  dataDir = process.env.DATA_DIR ?? join(process.cwd(), "data")
-): DatabaseSync {
-  if (db) return db;
-  mkdirSync(dataDir, { recursive: true });
-  const path = join(dataDir, "lemon.sqlite");
-  const database = new DatabaseSync(path);
-  database.exec(`
-    CREATE TABLE IF NOT EXISTS events (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      received_at TEXT NOT NULL,
-      event_name TEXT NOT NULL,
-      payload TEXT NOT NULL
-    );
-    CREATE TABLE IF NOT EXISTS orders (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      received_at TEXT NOT NULL,
-      event_name TEXT NOT NULL,
-      order_id TEXT,
-      email TEXT,
-      product_name TEXT,
-      variant_name TEXT,
-      license_key TEXT,
-      app TEXT,
-      status TEXT
-    );
-  `);
-  db = database;
-  return database;
+let paths: Paths | null = null;
+let eventSeq = 0;
+let orderSeq = 0;
+
+function dataDir(): string {
+  return process.env.DATA_DIR ?? join(process.cwd(), "data");
 }
 
-function database(): DatabaseSync {
-  return ensureStore();
+export function ensureStore(dir = dataDir()): Paths {
+  if (paths) return paths;
+  mkdirSync(dir, { recursive: true });
+  paths = {
+    events: join(dir, "events.jsonl"),
+    orders: join(dir, "orders.jsonl"),
+  };
+  // Resume sequences from existing files
+  eventSeq = countLines(paths.events);
+  orderSeq = countLines(paths.orders);
+  return paths;
+}
+
+function countLines(file: string): number {
+  if (!existsSync(file)) return 0;
+  const text = readFileSync(file, "utf8");
+  if (!text.trim()) return 0;
+  return text.split("\n").filter((l) => l.trim()).length;
+}
+
+function appendJson(file: string, row: unknown): void {
+  appendFileSync(file, `${JSON.stringify(row)}\n`, "utf8");
+}
+
+function readJsonl<T>(file: string): T[] {
+  if (!existsSync(file)) return [];
+  return readFileSync(file, "utf8")
+    .split("\n")
+    .filter((l) => l.trim())
+    .map((l) => JSON.parse(l) as T);
 }
 
 export function insertEvent(eventName: string, payload: string): void {
-  database()
-    .prepare(
-      `INSERT INTO events (received_at, event_name, payload) VALUES (?, ?, ?)`
-    )
-    .run(new Date().toISOString(), eventName, payload);
+  const p = ensureStore();
+  eventSeq += 1;
+  appendJson(p.events, {
+    id: eventSeq,
+    receivedAt: new Date().toISOString(),
+    eventName,
+    payload,
+  } satisfies StoredEvent);
 }
 
 export function insertOrderSummary(row: {
@@ -77,63 +84,32 @@ export function insertOrderSummary(row: {
   app?: string | null;
   status?: string | null;
 }): void {
-  database()
-    .prepare(
-      `INSERT INTO orders (
-        received_at, event_name, order_id, email, product_name,
-        variant_name, license_key, app, status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    )
-    .run(
-      new Date().toISOString(),
-      row.eventName,
-      row.orderId ?? null,
-      row.email ?? null,
-      row.productName ?? null,
-      row.variantName ?? null,
-      row.licenseKey ?? null,
-      row.app ?? null,
-      row.status ?? null
-    );
+  const p = ensureStore();
+  orderSeq += 1;
+  appendJson(p.orders, {
+    id: orderSeq,
+    receivedAt: new Date().toISOString(),
+    eventName: row.eventName,
+    orderId: row.orderId ?? null,
+    email: row.email ?? null,
+    productName: row.productName ?? null,
+    variantName: row.variantName ?? null,
+    licenseKey: row.licenseKey ?? null,
+    app: row.app ?? null,
+    status: row.status ?? null,
+  } satisfies StoredOrder);
 }
 
 export function listOrders(limit = 50): StoredOrder[] {
-  const rows = database()
-    .prepare(
-      `SELECT id, received_at as receivedAt, event_name as eventName,
-              order_id as orderId, email, product_name as productName,
-              variant_name as variantName, license_key as licenseKey,
-              app, status
-       FROM orders ORDER BY id DESC LIMIT ?`
-    )
-    .all(limit) as Array<Record<string, unknown>>;
-  return rows.map((r) => ({
-    id: Number(r.id),
-    receivedAt: String(r.receivedAt),
-    eventName: String(r.eventName),
-    orderId: r.orderId == null ? null : String(r.orderId),
-    email: r.email == null ? null : String(r.email),
-    productName: r.productName == null ? null : String(r.productName),
-    variantName: r.variantName == null ? null : String(r.variantName),
-    licenseKey: r.licenseKey == null ? null : String(r.licenseKey),
-    app: r.app == null ? null : String(r.app),
-    status: r.status == null ? null : String(r.status),
-  }));
+  ensureStore();
+  const rows = readJsonl<StoredOrder>(paths!.orders);
+  return rows.reverse().slice(0, limit);
 }
 
 export function listEvents(limit = 20): StoredEvent[] {
-  const rows = database()
-    .prepare(
-      `SELECT id, received_at as receivedAt, event_name as eventName, payload
-       FROM events ORDER BY id DESC LIMIT ?`
-    )
-    .all(limit) as Array<Record<string, unknown>>;
-  return rows.map((r) => ({
-    id: Number(r.id),
-    receivedAt: String(r.receivedAt),
-    eventName: String(r.eventName),
-    payload: String(r.payload),
-  }));
+  ensureStore();
+  const rows = readJsonl<StoredEvent>(paths!.events);
+  return rows.reverse().slice(0, limit);
 }
 
 export function summarizeWebhook(

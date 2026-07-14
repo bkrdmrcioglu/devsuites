@@ -13,7 +13,6 @@ export LEMON_MOCK=1
 export PORT
 export DATA_DIR
 export LEMON_WEBHOOK_SECRET="${LEMON_WEBHOOK_SECRET:-mock_webhook_secret}"
-export NODE_OPTIONS="--experimental-sqlite"
 
 # Kill leftover
 pkill -f "next start -p ${PORT}" 2>/dev/null || true
@@ -22,7 +21,7 @@ sleep 0.5
 
 npm run build
 
-NODE_OPTIONS=--experimental-sqlite LEMON_MOCK=1 DATA_DIR="$DATA_DIR" PORT="$PORT" \
+LEMON_MOCK=1 DATA_DIR="$DATA_DIR" PORT="$PORT" \
   npx next start -p "$PORT" &
 PID=$!
 cleanup() { kill "$PID" 2>/dev/null || true; }

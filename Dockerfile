@@ -19,7 +19,7 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 ENV DATA_DIR=/data
-ENV NODE_OPTIONS=--experimental-sqlite
+# NODE_OPTIONS removed — storage is JSONL (no node:sqlite)
 
 RUN mkdir -p /data && addgroup -S nodejs && adduser -S nextjs -G nodejs
 

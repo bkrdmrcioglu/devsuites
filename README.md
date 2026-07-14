@@ -25,7 +25,9 @@ npm test             # smoke
 1. Build from repo root **Dockerfile** (Node 22, `output: 'standalone'`)
 2. Domain: **`devsuites.dev`** (no separate api subdomain)
 3. Env: `LEMON_*` secrets; **do not** set `LEMON_MOCK=1` in production
-4. Persist volume → `/data`
+4. Persist volume → `/data` (orders/events JSONL)
 5. Lemon webhook URL: `https://devsuites.dev/api/webhooks/lemon`
+
+**Build pack:** prefer **Dockerfile**. If Nixpacks is selected, `nixpacks.toml` is used automatically.
 
 See [`LEMON.md`](./LEMON.md).

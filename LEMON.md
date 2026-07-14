@@ -31,8 +31,11 @@ One store for all four apps. Checkout + webhooks live on the **same Next.js app*
 
 - `LEMON_API_KEY`, `LEMON_STORE_ID`, `LEMON_WEBHOOK_SECRET`
 - `LEMON_VARIANT_DEVDOCK` / `_DEVMAIL` / `_DEVSQL` / `_DEVCHECK`
-- `DATA_DIR=/data`
-- `NODE_OPTIONS=--experimental-sqlite` (Dockerfile sets this)
+- `DATA_DIR=/data` (JSONL files under this folder)
+
+## Coolify tip
+
+Set build pack to **Dockerfile** (repo root). Nixpacks also works via `nixpacks.toml`.
 
 ## Local mock
 

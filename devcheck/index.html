@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DevCheck — Localhost shield + store prep.</title>
-  <meta name="description" content="Native macOS app: securityheaders-style grades on localhost only, plus App Store readiness checklist and static scan." />
+  <title>DevCheck — Localhost shield + store prep + code guard.</title>
+  <meta name="description" content="Native macOS app: localhost HTTP header grades, App Store / Play prep with educational findings, and static Code Guard — never remote host scans." />
   <meta property="og:title" content="DevCheck" />
-  <meta property="og:description" content="Localhost shield + store prep." />
+  <meta property="og:description" content="Localhost shield + store prep + code guard." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://devsuites.dev/devcheck/" />
   <meta property="og:image" content="../assets/devcheck-mark.png" />
@@ -39,14 +39,22 @@
       <a class="suite-chip reveal" href="../"><img src="../assets/mark.png" alt="" /> Part of <strong>DevSuites</strong></a>
       <img class="hero-mark reveal" src="../assets/devcheck-mark.png" width="72" height="72" alt="DevCheck" />
       <h1 class="reveal delay-1">DevCheck</h1>
-      <p class="lede reveal delay-2">Localhost shield + store prep.</p>
+      <p class="lede reveal delay-2">Localhost shield + store prep + code guard.</p>
       <p class="support reveal delay-2">
-        Grade your local app’s HTTP security headers (never remote hosts), then walk an App Store readiness
-        checklist with a static scan for secrets, ATS, purpose strings, and high-risk rejection patterns.
+        Grade your local app’s HTTP security headers (never remote hosts), prep App Store / Play with
+        guided checklists, and scan mobile + web code for XSS/SQLi/secrets patterns — each finding
+        explains what, why, and how to fix.
       </p>
       <div class="cta-row reveal delay-3">
-        <a class="btn primary" href="#download">Coming soon</a>
+        <a class="btn primary" href="https://github.com/bkrdmrcioglu/devcheck-site/releases/download/v0.2.2/DevCheck-0.2.2.zip">Download for Mac</a>
         <a class="btn ghost" href="https://devcheck.lemonsqueezy.com" rel="noopener">Buy Pro — $19</a>
+      </div>
+      <div class="brew-field reveal delay-3">
+        <label class="brew-label" for="brew-cmd">Homebrew</label>
+        <div class="brew-row">
+          <input id="brew-cmd" type="text" readonly value="brew install --cask bkrdmrcioglu/devcheck/devcheck" />
+          <button type="button" class="brew-copy" data-copy-target="brew-cmd">Copy</button>
+        </div>
       </div>
       <p class="fine reveal delay-3">macOS 14+ · Free: Local Shield + 1 Store Prep project · Pro $19 one-time</p>
     </section>
@@ -55,20 +63,20 @@
       <div class="shot-frame">
         <div class="shot-bar">
           <span></span><span></span><span></span>
-          <p>DevCheck — Local Shield · Store Prep</p>
+          <p>DevCheck — Local Shield · Store Prep · Code Guard</p>
         </div>
         <div class="shot-body">
           <aside>
             <p class="aside-label">Tools</p>
             <div class="row on"><i></i> Local Shield</div>
             <div class="row"><i></i> Store Prep</div>
-            <div class="row"><i></i> http://127.0.0.1:3000</div>
+            <div class="row"><i></i> Code Guard</div>
             <div class="row"><i></i> Grade A− pending CSP</div>
           </aside>
           <div class="detail">
             <p class="status"><i class="dot"></i> Loopback only</p>
             <h2>Header grade</h2>
-            <p class="meta">CSP · HSTS · XCTO · Frame · Referrer · Permissions</p>
+            <p class="meta">CSP · cookies · CORS · why it matters · copy fix</p>
             <div class="actions">
               <span class="chip accent">Scan</span>
               <span class="chip">Checklist</span>
@@ -81,14 +89,13 @@
     </section>
 
     <section id="features" class="section">
-      <h2>Two jobs. One Mac app.</h2>
+      <h2>Three jobs. One Mac app.</h2>
       <p class="section-support">Ship-ready hygiene without turning into a pentest weapon.</p>
       <dl class="feature-list">
-        <div><dt>Local Shield</dt><dd>securityheaders-style A+→F grades for <code>localhost</code> / <code>127.0.0.1</code> / <code>*.localhost</code> only. Remote URLs never leave the gate.</dd></div>
-        <div><dt>Header checks</dt><dd>CSP, HSTS (when HTTPS), X-Content-Type-Options, clickjacking, Referrer-Policy, Permissions-Policy, COOP.</dd></div>
-        <div><dt>Store Prep checklist</dt><dd>Curated App Review readiness items — Safety, Performance, Business, Design, Legal — Pass / Fail / N/A.</dd></div>
-        <div><dt>Static scan</dt><dd>Info.plist purpose strings, ATS arbitrary loads, PrivacyInfo.xcprivacy, secret patterns, IAP restore &amp; account-deletion heuristics.</dd></div>
-        <div><dt>Free + Pro</dt><dd>Free keeps Local Shield + one Store Prep project. Pro ($19 one-time) unlocks unlimited projects and the full checklist.</dd></div>
+        <div><dt>Local Shield</dt><dd>securityheaders-style A+→F grades for <code>localhost</code> / <code>127.0.0.1</code> / <code>*.localhost</code> only. Weak checks expand into why + copyable Next/Express/nginx fixes.</dd></div>
+        <div><dt>Store Prep</dt><dd>App Store + Play checklists with how-to-pass guidance, privacy manifest / entitlements audit, diff vs last scan, Markdown/PDF export (Pro).</dd></div>
+        <div><dt>Code Guard</dt><dd>Static XSS / SQL / command / secrets patterns for mobile + web + API projects — educational findings, never live exploit probes.</dd></div>
+        <div><dt>Free + Pro</dt><dd>Free keeps Local Shield + one Store Prep project. Pro ($19 one-time) unlocks unlimited projects, full checklist, and export.</dd></div>
         <div><dt>Family chrome</dt><dd>Same ink/mint Settings, license, and What’s New as DevDock, DevMail, and DevSQL.</dd></div>
       </dl>
     </section>
@@ -104,18 +111,18 @@
             <li>Local Shield (localhost only)</li>
             <li>1 Store Prep project</li>
             <li>Critical checklist items</li>
-            <li>No remote scanning</li>
+            <li>Code Guard · critical findings</li>
           </ul>
-          <a class="btn ghost" href="#download">Coming soon</a>
+          <a class="btn ghost" href="https://github.com/bkrdmrcioglu/devcheck-site/releases/download/v0.2.2/DevCheck-0.2.2.zip">Download</a>
         </article>
         <article class="plan featured">
           <h3>Pro</h3>
           <p class="price">$19 <span>one-time</span></p>
           <ul>
             <li>Unlimited Store Prep projects</li>
-            <li>Full guideline checklist</li>
+            <li>Full guideline checklist + export</li>
+            <li>Code Guard · all severities</li>
             <li>Lemon Squeezy license</li>
-            <li>Move seats between machines</li>
           </ul>
           <a class="btn primary" href="https://devcheck.lemonsqueezy.com" rel="noopener">Buy Pro — $19</a>
         </article>
@@ -124,12 +131,17 @@
 
     <section id="download" class="section">
       <h2>Get DevCheck</h2>
-      <p class="section-support">
-        First notarized release is next. For now: open <code>/Volumes/…/DevCheck</code> in Xcode and Run,
-        or wait for the Homebrew cask + zip like the rest of the suite.
-      </p>
+      <p class="section-support">Notarized Developer ID build once the first release is cut. Homebrew cask or zip. Lemon key activates Pro in Settings.</p>
+      <div class="install-block">
+        <p class="install-label">Homebrew</p>
+        <div class="brew-row">
+          <input id="brew-cmd-dl" type="text" readonly value="brew install --cask bkrdmrcioglu/devcheck/devcheck" />
+          <button type="button" class="brew-copy" data-copy-target="brew-cmd-dl">Copy</button>
+        </div>
+      </div>
+
       <div class="cta-row">
-        <a class="btn primary" href="../">Back to suite</a>
+        <a class="btn primary" href="https://github.com/bkrdmrcioglu/devcheck-site/releases/download/v0.2.2/DevCheck-0.2.2.zip">Download for Mac</a>
         <a class="btn ghost" href="https://devcheck.lemonsqueezy.com" rel="noopener">Buy Pro — $19</a>
       </div>
     </section>
@@ -139,7 +151,8 @@
       <div class="faq-list">
         <details><summary>Can it scan production URLs?</summary><p>No. Remote hosts are rejected before any request. Only loopback / *.localhost.</p></details>
         <details><summary>Is this a guarantee of App Store approval?</summary><p>No — it’s a prep aid: checklist + static heuristics inspired by common rejection patterns, not a substitute for Apple’s guidelines.</p></details>
-        <details><summary>Free vs Pro?</summary><p>Free: Local Shield + 1 Store Prep project (partial checklist). Pro ($19 one-time): unlimited projects + full checklist.</p></details>
+        <details><summary>Does Code Guard exploit apps?</summary><p>No. It only matches insecure patterns in your local source (sinks, secrets). It never sends attack payloads.</p></details>
+        <details><summary>Free vs Pro?</summary><p>Free: Local Shield + 1 Store Prep project (partial checklist) + Code Guard criticals. Pro ($19 one-time): unlimited projects + full checklist + export + all severities.</p></details>
         <details><summary>Part of DevSuites?</summary><p>Yes — same family as DevDock ($29), DevMail ($19), and DevSQL ($19) on <a href="../">devsuites.dev</a>.</p></details>
       </div>
     </section>
@@ -159,5 +172,19 @@
     <p>DevCheck · part of <a href="../">DevSuites</a></p>
   </footer>
   <script src="../script.js"></script>
+  <script>
+    document.querySelectorAll(".brew-copy").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const input = document.getElementById(btn.getAttribute("data-copy-target"));
+        if (!input) return;
+        try { await navigator.clipboard.writeText(input.value); }
+        catch { input.select(); document.execCommand("copy"); }
+        const prev = btn.textContent;
+        btn.textContent = "Copied";
+        btn.classList.add("copied");
+        setTimeout(() => { btn.textContent = prev; btn.classList.remove("copied"); }, 1200);
+      });
+    });
+  </script>
 </body>
 </html>

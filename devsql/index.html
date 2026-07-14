@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DevSQL — Local SQL & Redis browser for Mac</title>
+  <meta name="description" content="Native macOS browser for SQLite, PostgreSQL, MySQL/MariaDB, Redis, and Supabase. Schema, query, Homebrew engine controls." />
+  <meta property="og:title" content="DevSQL" />
+  <meta property="og:description" content="Browse local databases without the heavy GUI." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://devsuites.dev/devsql/" />
+  <meta property="og:image" content="../assets/devsql-mark.png" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <header class="top">
+    <a class="brand" href="../">
+      <img src="../assets/mark.png" width="28" height="28" alt="" />
+      DevSuites
+    </a>
+    <nav>
+      <a href="../devdock/">DevDock</a>
+      <a href="../devmail/">DevMail</a>
+      <a href="../devsql/">DevSQL</a>
+      <a href="#download" class="nav-cta">Get DevSQL</a>
+    </nav>
+  </header>
+  <main>
+
+    <section class="hero product">
+      <a class="suite-chip reveal" href="../"><img src="../assets/mark.png" alt="" /> Part of <strong>DevSuites</strong></a>
+      <img class="hero-mark reveal" src="../assets/devsql-mark.png" alt="DevSQL" />
+      <h1 class="reveal delay-1">DevSQL</h1>
+      <p class="lede reveal delay-2">Browse local databases without the heavy GUI.</p>
+      <p class="support reveal delay-2">
+        Open a <code>.sqlite</code> file, talk to Homebrew Postgres / MySQL, run Redis KEYS / GET,
+        or paste a Supabase host with TLS. Schema sidebar, query editor, result grid — ink/mint chrome.
+      </p>
+      <div class="cta-row reveal delay-3">
+        <a class="btn primary" href="https://github.com/bkrdmrcioglu/devsql" rel="noopener">View on GitHub</a>
+        <a class="btn ghost" href="https://devsql.lemonsqueezy.com" rel="noopener">Buy Pro</a>
+      </div>
+      <p class="fine reveal delay-3">macOS 14+ · Free: 3 connections · Passwords in Keychain</p>
+    </section>
+
+    <section class="shot reveal delay-4" aria-label="Product preview">
+      <div class="shot-frame">
+        <div class="shot-bar">
+          <span></span><span></span><span></span>
+          <p>DevSQL — local SQL · Redis browser</p>
+        </div>
+        <div class="shot-body">
+          <aside>
+            <p class="aside-label">Connections</p>
+            <div class="row on"><i></i> Local Postgres · :5432</div>
+            <div class="row"><i></i> app.sqlite</div>
+            <div class="row"><i></i> Redis · :6379</div>
+            <div class="row"><i></i> Supabase · TLS</div>
+          </aside>
+          <div class="detail">
+            <p class="status"><i class="dot"></i> Connected</p>
+            <h2>public.users</h2>
+            <p class="meta">SELECT * · 24 rows · 12.4 ms</p>
+            <div class="actions">
+              <span class="chip accent">Run</span>
+              <span class="chip">Refresh</span>
+              <span class="chip">Close</span>
+            </div>
+            <pre>SELECT id, email FROM users LIMIT 50;</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2>Engines that matter locally</h2>
+      <p class="section-support">One browser for the databases you actually run while shipping.</p>
+      <dl class="feature-list">
+        <div><dt>SQLite</dt><dd>Open <code>.sqlite</code> / <code>.db</code> files. Schema list + ad-hoc SQL without leaving the desk.</dd></div>
+        <div><dt>PostgreSQL</dt><dd>Host, port, user, database. Passwords stored in Keychain. Works with local Homebrew / Docker.</dd></div>
+        <div><dt>MySQL / MariaDB</dt><dd>Same remote form on port 3306 — LAN or localhost.</dd></div>
+        <div><dt>Redis</dt><dd>RESP client for KEYS, GET, PING, HGETALL. Keys show in the schema pane.</dd></div>
+        <div><dt>Supabase</dt><dd>Postgres over TLS preset — paste <code>db.*.supabase.co</code> and the database password.</dd></div>
+        <div><dt>Engine controls</dt><dd>Install, start, stop, restart local Postgres / MySQL / Redis from the sidebar when Homebrew is available.</dd></div>
+        <div><dt>Family chrome</dt><dd>About, Settings, license, What’s New, update check, menu bar — same suite language as DevDock.</dd></div>
+      </dl>
+    </section>
+
+    <section id="pricing" class="section">
+      <h2>Simple pricing</h2>
+      <p class="section-support">Free to peek. Pro when you keep many connections.</p>
+      <div class="plans">
+        <article class="plan">
+          <h3>Free</h3>
+          <p class="price">$0</p>
+          <ul>
+            <li>Up to 3 saved connections</li>
+            <li>All engines</li>
+            <li>Schema + query + results</li>
+            <li>Homebrew install &amp; start</li>
+          </ul>
+          <a class="btn ghost" href="https://github.com/bkrdmrcioglu/devsql" rel="noopener">GitHub</a>
+        </article>
+        <article class="plan featured">
+          <h3>Pro</h3>
+          <p class="price">Unlock <span>one-time</span></p>
+          <ul>
+            <li>Unlimited connections</li>
+            <li>Lemon Squeezy license</li>
+            <li>Move seats between machines</li>
+            <li>Same suite Settings UX</li>
+          </ul>
+          <a class="btn primary" href="https://devsql.lemonsqueezy.com" rel="noopener">Buy Pro</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="download" class="section">
+      <h2>Get DevSQL</h2>
+      <p class="section-support">Source and releases on GitHub. Activate Pro in Settings with your Lemon key.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="https://github.com/bkrdmrcioglu/devsql" rel="noopener">GitHub</a>
+        <a class="btn ghost" href="https://devsql.lemonsqueezy.com" rel="noopener">Buy Pro</a>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <h2>FAQ</h2>
+      <div class="faq-list">
+        <details><summary>Does it replace TablePlus?</summary><p>No — DevSQL is for fast local peeks while coding, not full DB admin / modeling.</p></details>
+        <details><summary>Are passwords safe?</summary><p>Stored in macOS Keychain per connection. Nothing is uploaded for browsing.</p></details>
+        <details><summary>Free connection cap?</summary><p>Free keeps 3 saved connections. Updating an existing host doesn’t consume a new slot. Pro removes the cap.</p></details>
+        <details><summary>Supabase?</summary><p>Yes — it is Postgres over TLS, not a separate protocol. Use the Supabase preset in Add.</p></details>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>More in the suite</h2>
+      <div class="sibs">
+        <a class="sib" href="../devdock/"><img src="../assets/devdock-mark.png" alt="" /><div><h3>DevDock</h3><p>Start API + web + mobile together</p></div></a>
+        <a class="sib" href="../devmail/"><img src="../assets/devmail-mark.png" alt="" /><div><h3>DevMail</h3><p>Catch local SMTP · webhooks</p></div></a>
+      </div>
+    </section>
+
+  </main>
+  <footer>
+    <p><strong>DevSQL</strong> · part of <a href="../">DevSuites</a></p>
+    <p>© <span id="y"></span> DevSuites · <a href="https://devsuites.dev">devsuites.dev</a></p>
+  </footer>
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+    document.querySelectorAll(".brew-copy").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const input = document.getElementById(btn.getAttribute("data-copy-target"));
+        if (!input) return;
+        try { await navigator.clipboard.writeText(input.value); }
+        catch { input.select(); document.execCommand("copy"); }
+        const prev = btn.textContent;
+        btn.textContent = "Copied";
+        btn.classList.add("copied");
+        setTimeout(() => { btn.textContent = prev; btn.classList.remove("copied"); }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

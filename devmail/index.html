@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DevMail — Catch every local email.</title>
+  <meta name="description" content="Native macOS SMTP catcher. Point apps at 127.0.0.1:1025 — HTML preview, magic links, webhooks, Redis. No Docker." />
+  <meta property="og:title" content="DevMail" />
+  <meta property="og:description" content="Catch every local email." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://devsuites.dev/devmail/" />
+  <meta property="og:image" content="../assets/devmail-mark.png" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" type="image/png" href="../assets/favicon.png" />
+  <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <header class="top">
+    <a class="brand" href="../">
+      <img src="../assets/mark.png" width="28" height="28" alt="" />
+      DevSuites
+    </a>
+    <nav>
+      <a href="../devdock/">DevDock</a>
+      <a href="../devmail/">DevMail</a>
+      <a href="../devsql/">DevSQL</a>
+      <a href="#download" class="nav-cta">Get DevMail</a>
+    </nav>
+  </header>
+  <main>
+
+    <section class="hero product">
+      <a class="suite-chip reveal" href="../"><img src="../assets/mark.png" alt="" /> Part of <strong>DevSuites</strong></a>
+      <img class="hero-mark reveal" src="../assets/devmail-mark.png" alt="DevMail" />
+      <h1 class="reveal delay-1">DevMail</h1>
+      <p class="lede reveal delay-2">Catch every local email.</p>
+      <p class="support reveal delay-2">
+        Point your app at <code>127.0.0.1:1025</code>. Native inbox with HTML, text, headers, attachments,
+        magic links + QR, plus a webhook sink and Redis browser — no Mailtrap account, no Docker.
+      </p>
+      <div class="cta-row reveal delay-3">
+        <a class="btn primary" href="https://github.com/bkrdmrcioglu/devmail" rel="noopener">View on GitHub</a>
+        <a class="btn ghost" href="https://devmail.lemonsqueezy.com" rel="noopener">Buy Pro</a>
+      </div>
+      <p class="fine reveal delay-3">macOS 14+ · Free keeps last 100 messages · Lemon Squeezy Pro</p>
+    </section>
+
+    <section class="shot reveal delay-4" aria-label="Product preview">
+      <div class="shot-frame">
+        <div class="shot-bar">
+          <span></span><span></span><span></span>
+          <p>DevMail — local SMTP catcher</p>
+        </div>
+        <div class="shot-body">
+          <aside>
+            <p class="aside-label">Inbox</p>
+            <div class="row on"><i></i> Reset password · noreply@…</div>
+            <div class="row"><i></i> Invite to workspace · team@…</div>
+            <div class="row"><i></i> Magic link · auth@…</div>
+            <div class="row"><i></i> Welcome · hello@…</div>
+          </aside>
+          <div class="detail">
+            <p class="status"><i class="dot"></i> SMTP :1025</p>
+            <h2>Reset password</h2>
+            <p class="meta">to: you@localhost · HTML + link</p>
+            <div class="actions">
+              <span class="chip accent">Open link</span>
+              <span class="chip">QR</span>
+              <span class="chip">Export EML</span>
+            </div>
+            <pre>smtp://127.0.0.1:1025</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <h2>Inbox that stays local</h2>
+      <p class="section-support">Built for auth flows, invites, and “did the email actually send?” moments.</p>
+      <dl class="feature-list">
+        <div><dt>Local SMTP</dt><dd>Listens on <code>127.0.0.1:1025</code> (configurable). Point frameworks with one-line presets for Rails, Laravel, Nodemailer, Django, and more.</dd></div>
+        <div><dt>Rich preview</dt><dd>HTML / text / headers / raw / attachments tabs. CID images rewritten so HTML looks like production mail.</dd></div>
+        <div><dt>Magic links</dt><dd>Detects reset and sign-in URLs, opens them, or shows a QR for phone testing.</dd></div>
+        <div><dt>Webhook sink</dt><dd>POST payloads to a local port and inspect headers + body next to your inbox.</dd></div>
+        <div><dt>Redis peek</dt><dd>Connect to local Redis, browse KEYS, peek values — same chrome as the mail tool.</dd></div>
+        <div><dt>Family chrome</dt><dd>Settings, license, What’s New, GitHub update check, menu bar status — same ink/mint as DevDock.</dd></div>
+      </dl>
+    </section>
+
+    <section id="pricing" class="section">
+      <h2>Simple pricing</h2>
+      <p class="section-support">Free to catch mail. Pro when history matters.</p>
+      <div class="plans">
+        <article class="plan">
+          <h3>Free</h3>
+          <p class="price">$0</p>
+          <ul>
+            <li>Local SMTP + inbox</li>
+            <li>Last 100 messages</li>
+            <li>Webhooks + Redis tools</li>
+            <li>Presets &amp; What’s New</li>
+          </ul>
+          <a class="btn ghost" href="https://github.com/bkrdmrcioglu/devmail" rel="noopener">GitHub</a>
+        </article>
+        <article class="plan featured">
+          <h3>Pro</h3>
+          <p class="price">Unlock <span>one-time</span></p>
+          <ul>
+            <li>Unlimited message history</li>
+            <li>Pro tools unlocked</li>
+            <li>License via Lemon Squeezy</li>
+            <li>Move seats between machines</li>
+          </ul>
+          <a class="btn primary" href="https://devmail.lemonsqueezy.com" rel="noopener">Buy Pro</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="download" class="section">
+      <h2>Get DevMail</h2>
+      <p class="section-support">Install from the GitHub repo / releases as builds ship. Lemon key activates Pro in Settings.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="https://github.com/bkrdmrcioglu/devmail" rel="noopener">GitHub</a>
+        <a class="btn ghost" href="https://devmail.lemonsqueezy.com" rel="noopener">Buy Pro</a>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <h2>FAQ</h2>
+      <div class="faq-list">
+        <details><summary>Do I need an account?</summary><p>No. Mail never leaves your Mac. Only Pro activation and update checks talk to the network.</p></details>
+        <details><summary>Can I change the SMTP port?</summary><p>Yes — Settings → local endpoints. Apply restarts the listener.</p></details>
+        <details><summary>Free cap?</summary><p>Free keeps the last 100 messages. Older ones drop off. Pro removes the cap.</p></details>
+        <details><summary>Part of DevSuites?</summary><p>Yes — same family as DevDock and DevSQL on <a href="../">devsuites.dev</a>.</p></details>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>More in the suite</h2>
+      <div class="sibs">
+        <a class="sib" href="../devdock/"><img src="../assets/devdock-mark.png" alt="" /><div><h3>DevDock</h3><p>Start API + web + mobile together</p></div></a>
+        <a class="sib" href="../devsql/"><img src="../assets/devsql-mark.png" alt="" /><div><h3>DevSQL</h3><p>Browse SQLite, Postgres, MySQL, Redis</p></div></a>
+      </div>
+    </section>
+
+  </main>
+  <footer>
+    <p><strong>DevMail</strong> · part of <a href="../">DevSuites</a></p>
+    <p>© <span id="y"></span> DevSuites · <a href="https://devsuites.dev">devsuites.dev</a></p>
+  </footer>
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+    document.querySelectorAll(".brew-copy").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const input = document.getElementById(btn.getAttribute("data-copy-target"));
+        if (!input) return;
+        try { await navigator.clipboard.writeText(input.value); }
+        catch { input.select(); document.execCommand("copy"); }
+        const prev = btn.textContent;
+        btn.textContent = "Copied";
+        btn.classList.add("copied");
+        setTimeout(() => { btn.textContent = prev; btn.classList.remove("copied"); }, 1400);
+      });
+    });
+  </script>
+</body>
+</html>

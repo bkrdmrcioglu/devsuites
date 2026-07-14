@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DevSuites — Local developer tools for Mac</title>
+  <meta name="description" content="DevDock, DevMail, and DevSQL — a native macOS suite for local stacks, mail, and databases. Same ink/mint chrome." />
+  <meta property="og:title" content="DevSuites" />
+  <meta property="og:description" content="Three Mac apps. One local developer suite." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://devsuites.dev/" />
+  <meta property="og:image" content="assets/og.png" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" type="image/png" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+
+  <header class="top">
+    <a class="brand" href="./">
+      <img src="assets/mark.png" width="28" height="28" alt="" />
+      DevSuites
+    </a>
+    <nav>
+      <a href="#apps">Apps</a>
+      <a href="#ritual">Ritual</a>
+      <a href="#faq">FAQ</a>
+      <a href="#apps" class="nav-cta">Explore</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1 class="reveal">DevSuites</h1>
+      <p class="lede reveal delay-1">Three Mac apps. One local developer suite.</p>
+      <p class="support reveal delay-2">
+        Start stacks, catch mail, browse SQL &amp; Redis — without Docker theater or five terminal tabs.
+        Same ink/mint chrome across the family.
+      </p>
+      <div class="cta-row reveal delay-3">
+        <a class="btn primary" href="#apps">Meet the apps</a>
+        <a class="btn ghost" href="https://github.com/bkrdmrcioglu" rel="noopener">GitHub</a>
+      </div>
+      <p class="fine reveal delay-3">macOS 14+ · Free tiers · Lemon Squeezy Pro · Notarized where published</p>
+    </section>
+
+    <section class="suite-visual reveal delay-4" aria-label="Suite preview">
+      <div class="suite-bar">
+        <span></span><span></span><span></span>
+        <p>DevSuites — local morning ritual</p>
+      </div>
+      <div class="suite-body">
+        <div class="suite-pane">
+          <img class="pane-mark" src="assets/devdock-mark.png" alt="" />
+          <p class="pane-kicker">Stacks</p>
+          <h3>DevDock</h3>
+          <p class="pane-line">Scan projects. Start API + web + mobile together.</p>
+          <p class="pane-status"><i class="dot"></i> Ready · :3000</p>
+        </div>
+        <div class="suite-pane">
+          <img class="pane-mark" src="assets/devmail-mark.png" alt="" />
+          <p class="pane-kicker">Mail</p>
+          <h3>DevMail</h3>
+          <p class="pane-line">Catch SMTP on 127.0.0.1:1025 — HTML, links, EML.</p>
+          <p class="pane-status"><i class="dot"></i> Listening · :1025</p>
+        </div>
+        <div class="suite-pane">
+          <img class="pane-mark" src="assets/devsql-mark.png" alt="" />
+          <p class="pane-kicker">Data</p>
+          <h3>DevSQL</h3>
+          <p class="pane-line">SQLite, Postgres, MySQL, Redis, Supabase — one browser.</p>
+          <p class="pane-status"><i class="dot"></i> Connected · local</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="apps" class="section">
+      <h2>The apps</h2>
+      <p class="section-support">
+        Each tool does one job well. Together they cover the morning path from boot to first green check.
+      </p>
+
+      <div class="app-strip">
+        <article id="devdock" class="app">
+          <div class="app-side">
+            <img src="assets/devdock-mark.png" alt="DevDock" />
+            <h3>DevDock</h3>
+            <p class="app-tag">Stacks · ports · workspaces</p>
+          </div>
+          <div class="app-body">
+            <p class="lead">All your local stacks. One workspace.</p>
+            <p>
+              Finds Next, Nest, Expo, Flutter, Go, Rails, and 30+ more. Start / stop with real PATH,
+              HTTP Ready pings, logs drawer, simulators, and morning workspaces from the menu bar.
+            </p>
+            <ul class="app-points">
+              <li>Scan folders · roles · command palette ⌘K</li>
+              <li>Workspaces + morning routine (Pro)</li>
+              <li>In-app updates via Homebrew / GitHub</li>
+            </ul>
+            <div class="app-cta">
+              <a class="btn primary sm" href="https://bkrdmrcioglu.github.io/devdock-site/" rel="noopener">Download DevDock</a>
+              <a class="btn ghost sm" href="https://devdock.lemonsqueezy.com" rel="noopener">Buy Pro</a>
+            </div>
+          </div>
+        </article>
+
+        <article id="devmail" class="app">
+          <div class="app-side">
+            <img src="assets/devmail-mark.png" alt="DevMail" />
+            <h3>DevMail</h3>
+            <p class="app-tag">SMTP · webhooks · Redis peek</p>
+          </div>
+          <div class="app-body">
+            <p class="lead">Catch every local email.</p>
+            <p>
+              Point your app at <code>127.0.0.1:1025</code>. Native inbox with HTML preview, magic links + QR,
+              attachments, webhook sink, and a local Redis browser — no Mailtrap account required.
+            </p>
+            <ul class="app-points">
+              <li>SMTP presets for frameworks</li>
+              <li>Webhook inspect on a local port</li>
+              <li>Free message cap · Pro unlimited</li>
+            </ul>
+            <div class="app-cta">
+              <a class="btn primary sm" href="https://github.com/bkrdmrcioglu/devmail" rel="noopener">DevMail on GitHub</a>
+              <a class="btn ghost sm" href="https://devmail.lemonsqueezy.com" rel="noopener">Buy Pro</a>
+            </div>
+          </div>
+        </article>
+
+        <article id="devsql" class="app">
+          <div class="app-side">
+            <img src="assets/devsql-mark.png" alt="DevSQL" />
+            <h3>DevSQL</h3>
+            <p class="app-tag">SQLite · Postgres · MySQL · Redis</p>
+          </div>
+          <div class="app-body">
+            <p class="lead">Browse local databases without the heavy GUI.</p>
+            <p>
+              Open a <code>.sqlite</code> file, connect Homebrew Postgres / MySQL, talk Redis with KEYS / GET,
+              or paste a Supabase host with TLS. Schema sidebar, query editor, result grid — same family chrome.
+            </p>
+            <ul class="app-points">
+              <li>Install &amp; start engines from the sidebar</li>
+              <li>Passwords in Keychain</li>
+              <li>Free: 3 connections · Pro unlimited</li>
+            </ul>
+            <div class="app-cta">
+              <a class="btn primary sm" href="https://github.com/bkrdmrcioglu/devsql" rel="noopener">DevSQL on GitHub</a>
+              <a class="btn ghost sm" href="https://devsql.lemonsqueezy.com" rel="noopener">Buy Pro</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="ritual" class="section">
+      <h2>One morning ritual</h2>
+      <p class="section-support">How the three apps sit together on a real workday.</p>
+      <dl class="ritual-list">
+        <div>
+          <dt>Boot stacks</dt>
+          <dd>DevDock morning routine brings up API + web + mobile. HTTP Ready tells you when localhost answers.</dd>
+        </div>
+        <div>
+          <dt>Watch mail</dt>
+          <dd>DevMail sits on :1025 while you trigger password resets, invites, and magic links from the app under test.</dd>
+        </div>
+        <div>
+          <dt>Peek data</dt>
+          <dd>DevSQL opens the SQLite file or local Postgres / Redis so you confirm the row without a browser tab maze.</dd>
+        </div>
+        <div>
+          <dt>Same chrome</dt>
+          <dd>Ink panels, mint accents, Settings, What’s New, license, and update checks — learn one, know them all.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section id="faq" class="section">
+      <h2>FAQ</h2>
+      <p class="section-support">Short answers for the suite, not a support novel.</p>
+      <div class="faq-list">
+        <details>
+          <summary>What is DevSuites?</summary>
+          <p>
+            The family name and site for three native macOS developer tools: DevDock (stacks),
+            DevMail (SMTP/webhooks), and DevSQL (databases &amp; Redis). Each app is sold and versioned on its own.
+          </p>
+        </details>
+        <details>
+          <summary>Do I need all three?</summary>
+          <p>No. Install only what you use. They share design language and license patterns, not a bundle installer (yet).</p>
+        </details>
+        <details>
+          <summary>macOS versions?</summary>
+          <p>macOS 14 Sonoma or later. Apple Silicon first; Intel where a universal/arm64 build is published.</p>
+        </details>
+        <details>
+          <summary>Free vs Pro?</summary>
+          <p>
+            Each app has its own Free cap (projects, messages, or connections) and a one-time Pro unlock via Lemon Squeezy.
+            Licenses are per product — not one key for the whole suite.
+          </p>
+        </details>
+        <details>
+          <summary>Where do I download?</summary>
+          <p>
+            DevDock ships a notarized zip + Homebrew cask from its public site.
+            DevMail and DevSQL ship from their GitHub repos / releases as they go live — links above stay current.
+          </p>
+        </details>
+        <details>
+          <summary>Privacy?</summary>
+          <p>
+            Work stays on your Mac. Update checks hit GitHub Releases; Pro activation talks to Lemon Squeezy.
+            No project source or mailbox content is uploaded for browsing.
+          </p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>DevSuites</strong> · Three Mac apps. One local developer suite.</p>
+    <p>© <span id="y"></span> DevSuites · <a href="https://devsuites.dev">devsuites.dev</a> · Payments via Lemon Squeezy.</p>
+  </footer>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

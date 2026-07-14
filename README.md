@@ -1,23 +1,21 @@
 # DevSuites
 
-**https://devsuites.dev**
+**https://devsuites.dev** — hosted on Coolify (static site).
 
-Marketing site for the local Mac developer suite:
-
-| App | Role |
+| Path | Page |
 |---|---|
-| [DevDock](https://devsuites.dev/#devdock) | Local stacks / workspaces |
-| [DevMail](https://devsuites.dev/#devmail) | SMTP catcher + webhooks |
-| [DevSQL](https://devsuites.dev/#devsql) | SQL & Redis browser |
+| `/` | Suite hub |
+| `/devdock/` | DevDock product |
+| `/devmail/` | DevMail product |
+| `/devsql/` | DevSQL product |
 
-## Preview
+## Deploy
+
+Push to `main` → Coolify rebuilds from https://github.com/bkrdmrcioglu/devsuites.git
 
 ```bash
+# local preview
 python3 -m http.server 8088
 ```
 
-## Pages
-
-GitHub Pages serves `/` from `main`. Custom domain: `devsuites.dev` (`CNAME` in repo root).
-
-Product marketing for DevDock / DevMail / DevSQL redirects here.
+Point `devsuites.dev` DNS at your Coolify host (not GitHub Pages).

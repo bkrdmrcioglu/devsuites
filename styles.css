@@ -742,3 +742,22 @@ footer strong { color: var(--chalk); }
   .feature-list > div { grid-template-columns: 1fr; gap: 6px; }
   .plans, .sibs { grid-template-columns: 1fr; }
 }
+
+
+.suite-pane-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.18s ease;
+}
+.suite-pane-link:hover {
+  background: rgba(46, 214, 140, 0.06);
+}
+.suite-pane-link:hover h3 {
+  color: var(--accent);
+}
+
+nav a[aria-current="page"],
+nav a.is-active {
+  color: var(--accent);
+}

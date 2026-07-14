@@ -18,6 +18,10 @@ export type StoredOrder = {
   licenseKey: string | null;
   app: string | null;
   status: string | null;
+  source: string;
+  activationLimit: number;
+  note: string | null;
+  activationCount?: number;
 };
 
 export async function ensureStore(): Promise<void> {
@@ -52,8 +56,8 @@ export async function insertOrderSummary(row: {
   await getPool().query(
     `INSERT INTO licenses (
       event_name, order_id, email, product_name, variant_name,
-      license_key, app, status
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      license_key, app, status, source
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 'lemon')
     ON CONFLICT (license_key) DO UPDATE SET
       event_name = EXCLUDED.event_name,
       order_id = COALESCE(EXCLUDED.order_id, licenses.order_id),
@@ -87,6 +91,10 @@ function mapLicenseRow(r: {
   license_key: string | null;
   app: string | null;
   status: string | null;
+  source?: string | null;
+  activation_limit?: number | string | null;
+  note?: string | null;
+  activation_count?: number | string | null;
 }): StoredOrder {
   const receivedAt =
     r.received_at instanceof Date
@@ -103,6 +111,11 @@ function mapLicenseRow(r: {
     licenseKey: r.license_key,
     app: r.app,
     status: r.status,
+    source: r.source ?? "lemon",
+    activationLimit: Number(r.activation_limit ?? 5),
+    note: r.note ?? null,
+    activationCount:
+      r.activation_count != null ? Number(r.activation_count) : undefined,
   };
 }
 
@@ -166,6 +179,215 @@ export async function verifyLicenseLogin(
     [email.trim().toLowerCase(), licenseKey.trim()]
   );
   return rows.length > 0;
+}
+
+const APP_PRODUCT: Record<string, string> = {
+  devdock: "DevDock Pro",
+  devmail: "DevMail Pro",
+  devsql: "DevSQL Pro",
+  devcheck: "DevCheck Pro",
+};
+
+export async function listAdminLicenses(limit = 200): Promise<StoredOrder[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query(
+    `SELECT l.*,
+      (SELECT COUNT(*)::int FROM license_instances i WHERE i.license_key = l.license_key) AS activation_count
+     FROM licenses l
+     WHERE l.license_key IS NOT NULL
+     ORDER BY l.id DESC
+     LIMIT $1`,
+    [limit]
+  );
+  return rows.map(mapLicenseRow);
+}
+
+export type CustomerSummary = {
+  email: string;
+  licenseCount: number;
+  apps: string[];
+  latestAt: string;
+};
+
+export async function listCustomers(): Promise<CustomerSummary[]> {
+  await ensureSchema();
+  const { rows } = await getPool().query(
+    `SELECT lower(email) AS email,
+            COUNT(*)::int AS license_count,
+            array_agg(DISTINCT app) FILTER (WHERE app IS NOT NULL) AS apps,
+            MAX(received_at) AS latest_at
+     FROM licenses
+     WHERE email IS NOT NULL AND license_key IS NOT NULL
+     GROUP BY lower(email)
+     ORDER BY latest_at DESC`
+  );
+  return rows.map(
+    (r: {
+      email: string;
+      license_count: number;
+      apps: string[] | null;
+      latest_at: Date | string;
+    }) => ({
+      email: r.email,
+      licenseCount: Number(r.license_count),
+      apps: r.apps ?? [],
+      latestAt:
+        r.latest_at instanceof Date
+          ? r.latest_at.toISOString()
+          : String(r.latest_at),
+    })
+  );
+}
+
+export async function createManualLicense(opts: {
+  email: string;
+  app: string;
+  licenseKey: string;
+  note?: string | null;
+  activationLimit?: number;
+}): Promise<StoredOrder> {
+  await ensureSchema();
+  const email = opts.email.trim().toLowerCase();
+  const app = opts.app.trim().toLowerCase();
+  const product = APP_PRODUCT[app] ?? `${app} Pro`;
+  const { rows } = await getPool().query(
+    `INSERT INTO licenses (
+      event_name, order_id, email, product_name, variant_name,
+      license_key, app, status, source, activation_limit, note
+    ) VALUES (
+      'admin_created', NULL, $1, $2, 'Admin',
+      $3, $4, 'inactive', 'admin', $5, $6
+    )
+    RETURNING *`,
+    [
+      email,
+      product,
+      opts.licenseKey.trim(),
+      app,
+      opts.activationLimit ?? 5,
+      opts.note?.trim() || null,
+    ]
+  );
+  return mapLicenseRow(rows[0]);
+}
+
+export async function findLicenseByKey(
+  licenseKey: string
+): Promise<StoredOrder | null> {
+  await ensureSchema();
+  const { rows } = await getPool().query(
+    `SELECT l.*,
+      (SELECT COUNT(*)::int FROM license_instances i WHERE i.license_key = l.license_key) AS activation_count
+     FROM licenses l
+     WHERE l.license_key = $1
+     LIMIT 1`,
+    [licenseKey.trim()]
+  );
+  if (!rows[0]) return null;
+  return mapLicenseRow(rows[0]);
+}
+
+export async function activateDbLicense(opts: {
+  licenseKey: string;
+  instanceName: string;
+}): Promise<{
+  activated: boolean;
+  error?: string;
+  instance?: { id: string };
+  meta?: { customer_email: string | null };
+}> {
+  const lic = await findLicenseByKey(opts.licenseKey);
+  if (!lic || !lic.licenseKey) {
+    return { activated: false, error: "license_key not found" };
+  }
+  if (lic.status === "disabled") {
+    return { activated: false, error: "license_key is disabled" };
+  }
+  const count = lic.activationCount ?? 0;
+  if (count >= lic.activationLimit) {
+    return { activated: false, error: "activation limit reached" };
+  }
+
+  const instanceId = randomInstanceId();
+  await getPool().query(
+    `INSERT INTO license_instances (license_key, instance_id, instance_name)
+     VALUES ($1, $2, $3)`,
+    [lic.licenseKey, instanceId, opts.instanceName]
+  );
+  await getPool().query(
+    `UPDATE licenses SET status = 'active' WHERE license_key = $1`,
+    [lic.licenseKey]
+  );
+
+  return {
+    activated: true,
+    instance: { id: instanceId },
+    meta: { customer_email: lic.email },
+  };
+}
+
+export async function validateDbLicense(opts: {
+  licenseKey: string;
+  instanceId?: string | null;
+}): Promise<{
+  valid: boolean;
+  error?: string;
+  meta?: { customer_email: string | null };
+}> {
+  const lic = await findLicenseByKey(opts.licenseKey);
+  if (!lic || !lic.licenseKey) {
+    return { valid: false, error: "license_key not found" };
+  }
+  if (lic.status === "disabled") {
+    return { valid: false, error: "license_key is disabled" };
+  }
+  if (opts.instanceId) {
+    const { rows } = await getPool().query(
+      `SELECT 1 FROM license_instances
+       WHERE license_key = $1 AND instance_id = $2 LIMIT 1`,
+      [lic.licenseKey, opts.instanceId]
+    );
+    if (!rows[0]) {
+      return { valid: false, error: "license_key instance not found" };
+    }
+  }
+  return {
+    valid: true,
+    meta: { customer_email: lic.email },
+  };
+}
+
+export async function deactivateDbLicense(opts: {
+  licenseKey: string;
+  instanceId: string;
+}): Promise<{ deactivated: boolean; error?: string }> {
+  const lic = await findLicenseByKey(opts.licenseKey);
+  if (!lic || !lic.licenseKey) {
+    return { deactivated: false, error: "license_key not found" };
+  }
+  const result = await getPool().query(
+    `DELETE FROM license_instances
+     WHERE license_key = $1 AND instance_id = $2`,
+    [lic.licenseKey, opts.instanceId]
+  );
+  if ((result.rowCount ?? 0) < 1) {
+    return { deactivated: false, error: "license_key instance not found" };
+  }
+  const { rows } = await getPool().query(
+    `SELECT COUNT(*)::int AS c FROM license_instances WHERE license_key = $1`,
+    [lic.licenseKey]
+  );
+  if (Number(rows[0]?.c ?? 0) === 0) {
+    await getPool().query(
+      `UPDATE licenses SET status = 'inactive' WHERE license_key = $1`,
+      [lic.licenseKey]
+    );
+  }
+  return { deactivated: true };
+}
+
+function randomInstanceId(): string {
+  return `ds_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
 }
 
 export function summarizeWebhook(

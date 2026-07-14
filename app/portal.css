@@ -156,3 +156,24 @@
 button.nav-cta {
   font-family: inherit;
 }
+
+.admin-portal {
+  max-width: 720px;
+}
+
+.admin-h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+  margin: 40px 0 12px;
+}
+
+.admin-select {
+  background: var(--elevated);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--chalk);
+  font: inherit;
+  padding: 12px 14px;
+}

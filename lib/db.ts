@@ -16,7 +16,6 @@ export function getPool(): Pool {
     pool = new Pool({
       connectionString: databaseUrl(),
       max: 5,
-      // Coolify/local Postgres usually has no SSL; set DATABASE_SSL=1 when needed
       ssl:
         process.env.DATABASE_SSL === "1"
           ? { rejectUnauthorized: false }
@@ -45,10 +44,29 @@ CREATE TABLE IF NOT EXISTS licenses (
   license_key TEXT,
   app TEXT,
   status TEXT,
+  source TEXT NOT NULL DEFAULT 'lemon',
+  activation_limit INT NOT NULL DEFAULT 5,
+  note TEXT,
   UNIQUE (license_key)
 );
 
 CREATE INDEX IF NOT EXISTS licenses_email_idx ON licenses (lower(email));
+
+CREATE TABLE IF NOT EXISTS license_instances (
+  id BIGSERIAL PRIMARY KEY,
+  license_key TEXT NOT NULL,
+  instance_id TEXT NOT NULL,
+  instance_name TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (license_key, instance_id)
+);
+
+CREATE INDEX IF NOT EXISTS license_instances_key_idx
+  ON license_instances (license_key);
+
+ALTER TABLE licenses ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'lemon';
+ALTER TABLE licenses ADD COLUMN IF NOT EXISTS activation_limit INT NOT NULL DEFAULT 5;
+ALTER TABLE licenses ADD COLUMN IF NOT EXISTS note TEXT;
 `;
 
 export async function ensureSchema(): Promise<void> {

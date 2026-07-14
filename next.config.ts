@@ -28,7 +28,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  trailingSlash: true,
+  // Keep false — trailingSlash:true broke /api/* and public/*/index.html product pages.
   async headers() {
     return [
       {

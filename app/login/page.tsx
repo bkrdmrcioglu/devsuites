@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import {
-  SESSION_COOKIE,
-  decodeSession,
-} from "@/lib/session";
-import { ensureStore, findLicensesByEmail } from "@/lib/store";
+import { redirect } from "next/navigation";
+import { SESSION_COOKIE, decodeSession } from "@/lib/session";
 import { githubOAuthConfigured } from "@/lib/githubOAuth";
 import { LoginClient } from "./LoginClient";
 
@@ -21,30 +18,15 @@ type Props = {
 };
 
 export default async function LoginPage({ searchParams }: Props) {
+  const jar = await cookies();
+  const session = decodeSession(jar.get(SESSION_COOKIE)?.value);
+  if (session?.email) redirect("/account");
+
   const params = searchParams ? await searchParams : {};
   const oauthError = typeof params.error === "string" ? params.error : null;
 
-  const jar = await cookies();
-  const session = decodeSession(jar.get(SESSION_COOKIE)?.value);
-  const email = session?.email ?? null;
-
-  let licenses: Awaited<ReturnType<typeof findLicensesByEmail>> = [];
-  let dbError: string | null = null;
-
-  if (email) {
-    try {
-      await ensureStore();
-      licenses = await findLicensesByEmail(email);
-    } catch (err) {
-      dbError = err instanceof Error ? err.message : "Database unavailable";
-    }
-  }
-
   return (
     <LoginClient
-      email={email}
-      licenses={licenses}
-      dbError={dbError}
       oauthError={oauthError}
       githubEnabled={githubOAuthConfigured()}
     />

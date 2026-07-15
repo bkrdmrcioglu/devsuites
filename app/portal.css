@@ -265,6 +265,25 @@
   color: var(--mist);
 }
 
+.portal-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.portal-avatar {
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+}
+
+.portal-user-email {
+  color: rgba(210, 222, 216, 0.55);
+  font-size: 0.88rem;
+}
+
 .license-list {
   list-style: none;
   margin: 0;
@@ -335,6 +354,230 @@
   margin: 12px 0 0;
   font-size: 0.8rem;
   color: rgba(210, 222, 216, 0.45);
+}
+
+/* —— Account portal —— */
+.account-main {
+  flex: 1;
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+.account-shell {
+  padding-top: clamp(28px, 5vw, 48px);
+}
+
+.account-kicker {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.account-title {
+  margin: 0 0 22px;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.75rem, 3.5vw, 2.35rem);
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.account-nav {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  margin-bottom: 28px;
+  width: fit-content;
+  max-width: 100%;
+  background: var(--elevated);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.account-nav a {
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--mist);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.account-nav a:hover {
+  color: var(--chalk);
+}
+
+.account-nav a.active {
+  background: rgba(46, 214, 140, 0.12);
+  color: var(--chalk);
+  box-shadow: inset 0 0 0 1px rgba(46, 214, 140, 0.22);
+}
+
+.account-body {
+  min-width: 0;
+}
+
+.account-section-head {
+  margin-bottom: 20px;
+}
+
+.account-section-head h2 {
+  margin: 0 0 6px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.account-section-head p {
+  margin: 0;
+  color: var(--mist);
+  font-size: 0.95rem;
+}
+
+.account-section-head strong {
+  color: var(--chalk);
+  font-weight: 600;
+}
+
+.account-hero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 22px;
+  margin-bottom: 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+.account-hero-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+}
+
+.account-hero-avatar--fallback {
+  display: grid;
+  place-items: center;
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.6rem;
+}
+
+.account-hero-text h2 {
+  margin: 0 0 4px;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.account-hero-text p {
+  margin: 0;
+  color: var(--mist);
+  font-size: 0.95rem;
+  word-break: break-all;
+}
+
+.account-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0 0 20px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.account-facts > div {
+  background: var(--panel);
+  padding: 16px 18px;
+}
+
+.account-facts dt {
+  margin: 0 0 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(210, 222, 216, 0.5);
+}
+
+.account-facts dd {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--chalk);
+  word-break: break-word;
+}
+
+.account-stat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  flex-wrap: wrap;
+}
+
+.account-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.account-stat-value {
+  font-family: var(--mono);
+  font-size: 1.75rem;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--chalk);
+}
+
+.account-stat-label {
+  font-size: 0.85rem;
+  color: var(--mist);
+}
+
+.account-stat-cta {
+  text-decoration: none;
+}
+
+@media (max-width: 860px) {
+  .account-main {
+    padding: 0 16px 48px;
+  }
+
+  .account-nav {
+    width: 100%;
+  }
+
+  .account-nav a {
+    flex: 1;
+    text-align: center;
+  }
+
+  .account-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .account-hero {
+    align-items: flex-start;
+  }
 }
 
 button.nav-cta {

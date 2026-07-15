@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import {
+  SITE_ACCOUNT_HREF,
   SITE_PORTAL_LINK,
   SITE_PRODUCTS,
   type SitePage,
@@ -17,13 +18,27 @@ type Props = {
   trailing?: React.ReactNode;
   /** Signed-in user's email, if any — swaps the login link for account state. */
   email?: string | null;
+  /** Display name from GitHub / profile; falls back to email in the nav. */
+  displayName?: string | null;
 };
 
-export function SiteHeader({ current, downloadHref, trailing, email }: Props) {
+export function SiteHeader({
+  current,
+  downloadHref,
+  trailing,
+  email,
+  displayName,
+}: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const ctaHref = downloadHref ?? downloadHrefFor(current);
+  const accountLabel = displayName?.trim() || email;
+  const accountHref = email ? SITE_ACCOUNT_HREF : SITE_PORTAL_LINK.href;
+  const accountCurrent =
+    current === "account" || current === "login"
+      ? ("page" as const)
+      : undefined;
 
   useEffect(() => {
     setOpen(false);
@@ -35,6 +50,7 @@ export function SiteHeader({ current, downloadHref, trailing, email }: Props) {
     setBusy(false);
     setOpen(false);
     router.refresh();
+    router.push("/login");
   }
 
   return (
@@ -69,12 +85,12 @@ export function SiteHeader({ current, downloadHref, trailing, email }: Props) {
           ))}
           {email ? (
             <a
-              href={SITE_PORTAL_LINK.href}
-              aria-current={current === "login" ? "page" : undefined}
+              href={accountHref}
+              aria-current={accountCurrent}
               onClick={() => setOpen(false)}
               title={email}
             >
-              {email}
+              {accountLabel}
             </a>
           ) : (
             <a

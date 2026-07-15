@@ -7,6 +7,7 @@ export type SitePage =
   | "devsql"
   | "devcheck"
   | "login"
+  | "account"
   | "admin";
 
 export type SiteNavLink = {
@@ -28,7 +29,16 @@ export const SITE_PORTAL_LINK: SiteNavLink = {
   href: "/login",
 };
 
+export const SITE_ACCOUNT_HREF = "/account";
+
 export function downloadHrefFor(page: SitePage): string {
-  if (page === "home" || page === "login" || page === "admin") return "/#apps";
+  if (
+    page === "home" ||
+    page === "login" ||
+    page === "account" ||
+    page === "admin"
+  ) {
+    return "/#apps";
+  }
   return "#download";
 }

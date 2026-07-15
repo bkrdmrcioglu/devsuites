@@ -79,7 +79,7 @@ export async function GET(req: Request) {
       return res;
     }
 
-    const res = NextResponse.redirect(new URL("/login", origin));
+    const res = NextResponse.redirect(new URL("/account", origin));
     res.cookies.set(
       SESSION_COOKIE,
       encodeSession(result.email),

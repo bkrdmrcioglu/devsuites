@@ -4,50 +4,10 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 
-type LicenseRow = {
-  id: number;
-  receivedAt: string;
-  eventName: string;
-  orderId: string | null;
-  email: string | null;
-  productName: string | null;
-  variantName: string | null;
-  licenseKey: string | null;
-  app: string | null;
-  status: string | null;
-};
-
 type Props = {
-  email: string | null;
-  licenses: LicenseRow[];
-  dbError: string | null;
   oauthError?: string | null;
   githubEnabled?: boolean;
 };
-
-const APP_LABELS: Record<string, string> = {
-  devdock: "DevDock",
-  devmail: "DevMail",
-  devsql: "DevSQL",
-  devcheck: "DevCheck",
-};
-
-function appLabel(app: string | null, product: string | null): string {
-  if (app && APP_LABELS[app]) return APP_LABELS[app];
-  if (product) return product;
-  return "License";
-}
-
-const STATUS_LABELS: Record<string, string> = {
-  active: "Active",
-  inactive: "Inactive",
-  disabled: "Cancelled",
-};
-
-function statusLabel(status: string | null): string | null {
-  if (!status) return null;
-  return STATUS_LABELS[status] ?? status;
-}
 
 function GitHubIcon() {
   return (
@@ -66,9 +26,6 @@ function GitHubIcon() {
 type AuthMode = "password" | "register";
 
 export function LoginClient({
-  email,
-  licenses,
-  dbError,
   oauthError = null,
   githubEnabled = false,
 }: Props) {
@@ -81,7 +38,6 @@ export function LoginClient({
 
   const [error, setError] = useState<string | null>(oauthError);
   const [busy, setBusy] = useState(false);
-  const [copied, setCopied] = useState<string | null>(null);
 
   function switchMode(next: AuthMode) {
     setMode(next);
@@ -105,6 +61,7 @@ export function LoginClient({
         setError(data.error ?? "Login failed");
         return;
       }
+      router.push("/account");
       router.refresh();
     } catch {
       setError("Network error");
@@ -132,21 +89,12 @@ export function LoginClient({
         setError(data.error ?? "Registration failed");
         return;
       }
+      router.push("/account");
       router.refresh();
     } catch {
       setError("Network error");
     } finally {
       setBusy(false);
-    }
-  }
-
-  async function copyKey(key: string) {
-    try {
-      await navigator.clipboard.writeText(key);
-      setCopied(key);
-      setTimeout(() => setCopied(null), 1600);
-    } catch {
-      /* ignore */
     }
   }
 
@@ -164,199 +112,144 @@ export function LoginClient({
 
   return (
     <div className="portal-page">
-      <SiteHeader current="login" email={email} />
+      <SiteHeader current="login" />
 
       <main>
-        <section className={`portal${!email ? " portal-auth" : ""}`}>
-          <h1>{email ? "My licenses" : mode === "register" ? "Create account" : "Login"}</h1>
-          {!email ? (
-            <div className="portal-auth-stack">
-              <div className="portal-tabs" role="tablist">
-                <button
-                  type="button"
-                  role="tab"
-                  className={`portal-tab${mode === "password" ? " active" : ""}`}
-                  aria-selected={mode === "password"}
-                  onClick={() => switchMode("password")}
-                >
-                  Login
-                </button>
-                <button
-                  type="button"
-                  role="tab"
-                  className={`portal-tab${mode === "register" ? " active" : ""}`}
-                  aria-selected={mode === "register"}
-                  onClick={() => switchMode("register")}
-                >
-                  Create account
-                </button>
-              </div>
-
-              {error ? <p className="portal-error">{error}</p> : null}
-
-              {mode === "password" ? (
-                <>
-                  <p className="portal-lede">
-                    Sign in with your DevSuites account.
-                  </p>
-                  <form className="portal-form" onSubmit={onPasswordLogin}>
-                    <label>
-                      Email
-                      <input
-                        type="email"
-                        autoComplete="email"
-                        required
-                        value={formEmail}
-                        onChange={(e) => setFormEmail(e.target.value)}
-                        placeholder="you@example.com"
-                      />
-                    </label>
-                    <label>
-                      Password
-                      <input
-                        type="password"
-                        autoComplete="current-password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
-                      />
-                    </label>
-                    <button
-                      type="submit"
-                      className="btn primary"
-                      disabled={busy}
-                    >
-                      {busy ? "Signing in…" : "Login"}
-                    </button>
-                  </form>
-                  {githubBlock}
-                  <p className="portal-switch">
-                    Don&apos;t have an account?{" "}
-                    <button
-                      type="button"
-                      onClick={() => switchMode("register")}
-                    >
-                      Create account
-                    </button>
-                  </p>
-                </>
-              ) : null}
-
-              {mode === "register" ? (
-                <>
-                  <p className="portal-lede">
-                    Use the same email as your Lemon purchase so licenses appear
-                    automatically.
-                  </p>
-                  <form className="portal-form" onSubmit={onRegister}>
-                    <label>
-                      Email
-                      <input
-                        type="email"
-                        autoComplete="email"
-                        required
-                        value={formEmail}
-                        onChange={(e) => setFormEmail(e.target.value)}
-                        placeholder="you@example.com"
-                      />
-                    </label>
-                    <label>
-                      Password
-                      <input
-                        type="password"
-                        autoComplete="new-password"
-                        required
-                        minLength={8}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="At least 8 characters"
-                      />
-                    </label>
-                    <label>
-                      Password (confirm)
-                      <input
-                        type="password"
-                        autoComplete="new-password"
-                        required
-                        minLength={8}
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        placeholder="Re-enter your password"
-                      />
-                    </label>
-                    <button
-                      type="submit"
-                      className="btn primary"
-                      disabled={busy}
-                    >
-                      {busy ? "Creating account…" : "Create account"}
-                    </button>
-                  </form>
-                  {githubBlock}
-                  <p className="portal-switch">
-                    Already have an account?{" "}
-                    <button type="button" onClick={() => switchMode("password")}>
-                      Login
-                    </button>
-                  </p>
-                </>
-              ) : null}
+        <section className="portal portal-auth">
+          <h1>{mode === "register" ? "Create account" : "Login"}</h1>
+          <div className="portal-auth-stack">
+            <div className="portal-tabs" role="tablist">
+              <button
+                type="button"
+                role="tab"
+                className={`portal-tab${mode === "password" ? " active" : ""}`}
+                aria-selected={mode === "password"}
+                onClick={() => switchMode("password")}
+              >
+                Login
+              </button>
+              <button
+                type="button"
+                role="tab"
+                className={`portal-tab${mode === "register" ? " active" : ""}`}
+                aria-selected={mode === "register"}
+                onClick={() => switchMode("register")}
+              >
+                Create account
+              </button>
             </div>
-          ) : (
-            <>
-              <p className="portal-lede">
-                Signed in as <strong>{email}</strong>
-              </p>
-              {dbError ? (
-                <p className="portal-error">{dbError}</p>
-              ) : licenses.length === 0 ? (
-                <p className="portal-empty">
-                  No license keys found for this email yet. After purchase,
-                  Lemon sends a key and our webhook stores it here.
+
+            {error ? <p className="portal-error">{error}</p> : null}
+
+            {mode === "password" ? (
+              <>
+                <p className="portal-lede">
+                  Sign in with your DevSuites account.
                 </p>
-              ) : (
-                <ul className="license-list">
-                  {licenses.map((lic) => (
-                    <li key={lic.id} className="license-card">
-                      <div className="license-card-top">
-                        <span className="license-app">
-                          {appLabel(lic.app, lic.productName)}
-                        </span>
-                        {statusLabel(lic.status) ? (
-                          <span className="license-status">
-                            {statusLabel(lic.status)}
-                          </span>
-                        ) : null}
-                      </div>
-                      {lic.productName || lic.variantName ? (
-                        <p className="license-meta">
-                          {[lic.productName, lic.variantName]
-                            .filter(Boolean)
-                            .join(" · ")}
-                        </p>
-                      ) : null}
-                      {lic.licenseKey ? (
-                        <div className="license-key-row">
-                          <code>{lic.licenseKey}</code>
-                          <button
-                            type="button"
-                            className="btn ghost sm"
-                            onClick={() => copyKey(lic.licenseKey!)}
-                          >
-                            {copied === lic.licenseKey ? "Copied" : "Copy"}
-                          </button>
-                        </div>
-                      ) : null}
-                      <p className="license-date">
-                        {new Date(lic.receivedAt).toLocaleString()}
-                      </p>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </>
-          )}
+                <form className="portal-form" onSubmit={onPasswordLogin}>
+                  <label>
+                    Email
+                    <input
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={formEmail}
+                      onChange={(e) => setFormEmail(e.target.value)}
+                      placeholder="you@example.com"
+                    />
+                  </label>
+                  <label>
+                    Password
+                    <input
+                      type="password"
+                      autoComplete="current-password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••"
+                    />
+                  </label>
+                  <button
+                    type="submit"
+                    className="btn primary"
+                    disabled={busy}
+                  >
+                    {busy ? "Signing in…" : "Login"}
+                  </button>
+                </form>
+                {githubBlock}
+                <p className="portal-switch">
+                  Don&apos;t have an account?{" "}
+                  <button
+                    type="button"
+                    onClick={() => switchMode("register")}
+                  >
+                    Create account
+                  </button>
+                </p>
+              </>
+            ) : null}
+
+            {mode === "register" ? (
+              <>
+                <p className="portal-lede">
+                  Use the same email as your Lemon purchase so licenses appear
+                  automatically.
+                </p>
+                <form className="portal-form" onSubmit={onRegister}>
+                  <label>
+                    Email
+                    <input
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={formEmail}
+                      onChange={(e) => setFormEmail(e.target.value)}
+                      placeholder="you@example.com"
+                    />
+                  </label>
+                  <label>
+                    Password
+                    <input
+                      type="password"
+                      autoComplete="new-password"
+                      required
+                      minLength={8}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="At least 8 characters"
+                    />
+                  </label>
+                  <label>
+                    Password (confirm)
+                    <input
+                      type="password"
+                      autoComplete="new-password"
+                      required
+                      minLength={8}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      placeholder="Re-enter your password"
+                    />
+                  </label>
+                  <button
+                    type="submit"
+                    className="btn primary"
+                    disabled={busy}
+                  >
+                    {busy ? "Creating account…" : "Create account"}
+                  </button>
+                </form>
+                {githubBlock}
+                <p className="portal-switch">
+                  Already have an account?{" "}
+                  <button type="button" onClick={() => switchMode("password")}>
+                    Login
+                  </button>
+                </p>
+              </>
+            ) : null}
+          </div>
         </section>
       </main>
       <footer className="portal-foot">

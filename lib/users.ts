@@ -124,3 +124,41 @@ export async function upsertGithubUser(
   );
   return { ok: true, email };
 }
+
+export async function getUserByEmail(email: string): Promise<{
+  email: string;
+  name: string | null;
+  avatarUrl: string | null;
+  githubId: string | null;
+  hasPassword: boolean;
+  createdAt: string | null;
+} | null> {
+  const result = await getPool().query<{
+    email: string;
+    name: string | null;
+    avatar_url: string | null;
+    github_id: string | null;
+    password_hash: string | null;
+    created_at: Date | string | null;
+  }>(
+    `SELECT email, name, avatar_url, github_id, password_hash, created_at
+     FROM users
+     WHERE lower(email) = lower($1)`,
+    [email.trim().toLowerCase()]
+  );
+  const row = result.rows[0];
+  if (!row) return null;
+  return {
+    email: row.email,
+    name: row.name,
+    avatarUrl: row.avatar_url,
+    githubId: row.github_id,
+    hasPassword: Boolean(row.password_hash),
+    createdAt:
+      row.created_at instanceof Date
+        ? row.created_at.toISOString()
+        : row.created_at
+          ? String(row.created_at)
+          : null,
+  };
+}

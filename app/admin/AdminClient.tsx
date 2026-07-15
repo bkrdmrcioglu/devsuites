@@ -239,7 +239,7 @@ function SidebarNav({
 
       <div className="space-y-0.5 border-t border-white/[0.06] px-3 py-4">
         <a
-          href="/login"
+          href="/account"
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-2.5 rounded-md px-3 py-2 text-[12px] text-[rgba(210,222,216,0.45)] transition-colors hover:bg-white/[0.05] hover:text-[rgba(238,246,241,0.85)]"

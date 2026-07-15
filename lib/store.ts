@@ -22,6 +22,8 @@ export type StoredOrder = {
   activationLimit: number;
   note: string | null;
   activationCount?: number;
+  /** When the customer used their one-time device reset, if ever. */
+  customerResetAt?: string | null;
 };
 
 export async function ensureStore(): Promise<void> {
@@ -95,11 +97,18 @@ function mapLicenseRow(r: {
   activation_limit?: number | string | null;
   note?: string | null;
   activation_count?: number | string | null;
+  customer_reset_at?: Date | string | null;
 }): StoredOrder {
   const receivedAt =
     r.received_at instanceof Date
       ? r.received_at.toISOString()
       : String(r.received_at);
+  const customerResetAt =
+    r.customer_reset_at == null
+      ? null
+      : r.customer_reset_at instanceof Date
+        ? r.customer_reset_at.toISOString()
+        : String(r.customer_reset_at);
   return {
     id: Number(r.id),
     receivedAt,
@@ -116,6 +125,7 @@ function mapLicenseRow(r: {
     note: r.note ?? null,
     activationCount:
       r.activation_count != null ? Number(r.activation_count) : undefined,
+    customerResetAt,
   };
 }
 
@@ -159,9 +169,11 @@ export async function findLicensesByEmail(
   await ensureSchema();
   const normalized = email.trim().toLowerCase();
   const { rows } = await getPool().query(
-    `SELECT * FROM licenses
-     WHERE lower(email) = $1 AND license_key IS NOT NULL
-     ORDER BY id DESC`,
+    `SELECT l.*,
+      (SELECT COUNT(*)::int FROM license_instances i WHERE i.license_key = l.license_key) AS activation_count
+     FROM licenses l
+     WHERE lower(l.email) = $1 AND l.license_key IS NOT NULL
+     ORDER BY l.id DESC`,
     [normalized]
   );
   return rows.map(mapLicenseRow);
@@ -435,6 +447,63 @@ export async function resetLicenseDevices(
       [lic.licenseKey]
     );
   }
+  return { reset: true, removed };
+}
+
+/**
+ * Customer self-serve: clear all device seats once per license.
+ * Ownership is checked by email match.
+ */
+export async function customerResetLicenseDevices(opts: {
+  email: string;
+  licenseKey: string;
+}): Promise<{
+  reset: boolean;
+  removed: number;
+  error?: string;
+  alreadyUsed?: boolean;
+}> {
+  await ensureSchema();
+  const email = opts.email.trim().toLowerCase();
+  const licenseKey = opts.licenseKey.trim();
+  if (!licenseKey) {
+    return { reset: false, removed: 0, error: "license_key required" };
+  }
+
+  const { rows } = await getPool().query<{
+    license_key: string;
+    customer_reset_at: Date | string | null;
+  }>(
+    `SELECT license_key, customer_reset_at
+     FROM licenses
+     WHERE license_key = $1 AND lower(email) = $2`,
+    [licenseKey, email]
+  );
+  const row = rows[0];
+  if (!row) {
+    return { reset: false, removed: 0, error: "license_key not found" };
+  }
+  if (row.customer_reset_at != null) {
+    return {
+      reset: false,
+      removed: 0,
+      alreadyUsed: true,
+      error: "Your one-time device reset has already been used for this license.",
+    };
+  }
+
+  const del = await getPool().query(
+    `DELETE FROM license_instances WHERE license_key = $1`,
+    [licenseKey]
+  );
+  const removed = del.rowCount ?? 0;
+  await getPool().query(
+    `UPDATE licenses
+     SET customer_reset_at = now(),
+         status = CASE WHEN $2::int > 0 THEN 'inactive' ELSE status END
+     WHERE license_key = $1`,
+    [licenseKey, removed]
+  );
   return { reset: true, removed };
 }
 

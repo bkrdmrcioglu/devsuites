@@ -11,6 +11,9 @@ export type LicenseRow = {
   licenseKey: string | null;
   app: string | null;
   status: string | null;
+  activationLimit?: number;
+  activationCount?: number;
+  customerResetAt?: string | null;
 };
 
 const APP_LABELS: Record<string, string> = {

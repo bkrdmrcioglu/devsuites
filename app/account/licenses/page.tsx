@@ -30,8 +30,8 @@ export default async function AccountLicensesPage() {
       <div className="account-section-head">
         <h2>My licenses</h2>
         <p>
-          Keys tied to <strong>{email}</strong>. Copy a key into the Mac app to
-          activate.
+          Keys tied to <strong>{email}</strong>. See seats in use, copy a key,
+          or use your <strong>one-time</strong> device reset if you changed Macs.
         </p>
       </div>
       {loadError ? (

@@ -67,6 +67,26 @@ CREATE INDEX IF NOT EXISTS license_instances_key_idx
 ALTER TABLE licenses ADD COLUMN IF NOT EXISTS source TEXT NOT NULL DEFAULT 'lemon';
 ALTER TABLE licenses ADD COLUMN IF NOT EXISTS activation_limit INT NOT NULL DEFAULT 5;
 ALTER TABLE licenses ADD COLUMN IF NOT EXISTS note TEXT;
+
+CREATE TABLE IF NOT EXISTS users (
+  id BIGSERIAL PRIMARY KEY,
+  email TEXT NOT NULL,
+  password_hash TEXT,
+  github_id TEXT UNIQUE,
+  name TEXT,
+  avatar_url TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (email)
+);
+
+CREATE INDEX IF NOT EXISTS users_email_idx ON users (lower(email));
+
+ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS github_id TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS name TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url TEXT;
+CREATE UNIQUE INDEX IF NOT EXISTS users_github_id_uidx
+  ON users (github_id) WHERE github_id IS NOT NULL;
 `;
 
 export async function ensureSchema(): Promise<void> {

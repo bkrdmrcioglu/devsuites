@@ -167,20 +167,6 @@ export async function findLicensesByEmail(
   return rows.map(mapLicenseRow);
 }
 
-export async function verifyLicenseLogin(
-  email: string,
-  licenseKey: string
-): Promise<boolean> {
-  await ensureSchema();
-  const { rows } = await getPool().query(
-    `SELECT 1 FROM licenses
-     WHERE lower(email) = $1 AND license_key = $2
-     LIMIT 1`,
-    [email.trim().toLowerCase(), licenseKey.trim()]
-  );
-  return rows.length > 0;
-}
-
 const APP_PRODUCT: Record<string, string> = {
   devdock: "DevDock Pro",
   devmail: "DevMail Pro",
@@ -463,6 +449,37 @@ export async function updateLicenseActivationLimit(opts: {
   const result = await getPool().query(
     `UPDATE licenses SET activation_limit = $2 WHERE license_key = $1`,
     [opts.licenseKey, limit]
+  );
+  if ((result.rowCount ?? 0) < 1) {
+    return { ok: false, error: "license_key not found" };
+  }
+  return { ok: true };
+}
+
+export async function updateLicenseStatus(opts: {
+  licenseKey: string;
+  status: "active" | "disabled";
+}): Promise<{ ok: boolean; error?: string }> {
+  const result = await getPool().query(
+    `UPDATE licenses SET status = $2 WHERE license_key = $1`,
+    [opts.licenseKey, opts.status]
+  );
+  if ((result.rowCount ?? 0) < 1) {
+    return { ok: false, error: "license_key not found" };
+  }
+  return { ok: true };
+}
+
+export async function deleteLicense(
+  licenseKey: string
+): Promise<{ ok: boolean; error?: string }> {
+  await getPool().query(
+    `DELETE FROM license_instances WHERE license_key = $1`,
+    [licenseKey]
+  );
+  const result = await getPool().query(
+    `DELETE FROM licenses WHERE license_key = $1`,
+    [licenseKey]
   );
   if ((result.rowCount ?? 0) < 1) {
     return { ok: false, error: "license_key not found" };

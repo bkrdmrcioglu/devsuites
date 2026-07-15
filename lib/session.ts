@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
+import { isSecureRequest } from "@/lib/http";
 
 export const SESSION_COOKIE = "devsuites_session";
 const MAX_AGE_SEC = 60 * 60 * 24 * 30; // 30 days
@@ -54,10 +55,10 @@ export function decodeSession(token: string | undefined | null): SessionPayload 
   }
 }
 
-export function sessionCookieOptions(maxAge = MAX_AGE_SEC) {
+export async function sessionCookieOptions(maxAge = MAX_AGE_SEC) {
   return {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: await isSecureRequest(),
     sameSite: "lax" as const,
     path: "/",
     maxAge,

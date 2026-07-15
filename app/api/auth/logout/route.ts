@@ -5,6 +5,6 @@ export const runtime = "nodejs";
 
 export async function POST() {
   const res = NextResponse.json({ ok: true });
-  res.cookies.set(SESSION_COOKIE, "", sessionCookieOptions(0));
+  res.cookies.set(SESSION_COOKIE, "", await sessionCookieOptions(0));
   return res;
 }

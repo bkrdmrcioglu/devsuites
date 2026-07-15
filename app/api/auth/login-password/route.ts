@@ -4,23 +4,24 @@ import {
   encodeSession,
   sessionCookieOptions,
 } from "@/lib/session";
-import { ensureStore, verifyLicenseLogin } from "@/lib/store";
+import { ensureStore } from "@/lib/store";
+import { verifyUserLogin } from "@/lib/users";
 
 export const runtime = "nodejs";
 
 export async function POST(req: Request) {
-  let body: { email?: string; licenseKey?: string };
+  let body: { email?: string; password?: string };
   try {
-    body = (await req.json()) as { email?: string; licenseKey?: string };
+    body = (await req.json()) as { email?: string; password?: string };
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
   const email = body.email?.trim() ?? "";
-  const licenseKey = body.licenseKey?.trim() ?? "";
-  if (!email || !licenseKey) {
+  const password = body.password ?? "";
+  if (!email || !password) {
     return NextResponse.json(
-      { error: "Email and license key are required" },
+      { error: "Email and password are required" },
       { status: 400 }
     );
   }
@@ -28,14 +29,15 @@ export async function POST(req: Request) {
   try {
     await ensureStore();
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Database unavailable";
+    const message =
+      err instanceof Error ? err.message : "Database unavailable";
     return NextResponse.json({ error: message }, { status: 503 });
   }
 
-  const ok = await verifyLicenseLogin(email, licenseKey);
+  const ok = await verifyUserLogin(email, password);
   if (!ok) {
     return NextResponse.json(
-      { error: "No matching license for that email and key" },
+      { error: "Invalid email or password" },
       { status: 401 }
     );
   }
@@ -44,7 +46,7 @@ export async function POST(req: Request) {
   res.cookies.set(
     SESSION_COOKIE,
     encodeSession(email),
-    sessionCookieOptions()
+    await sessionCookieOptions()
   );
   return res;
 }

@@ -1,4 +1,4 @@
-/** Single source of truth for the public site header. Keep in sync with `public/site-header.js`. */
+/** Single source of truth for the public site header nav, consumed by components/SiteHeader.tsx. */
 
 export type SitePage =
   | "home"
@@ -6,7 +6,7 @@ export type SitePage =
   | "devmail"
   | "devsql"
   | "devcheck"
-  | "licenses"
+  | "login"
   | "admin";
 
 export type SiteNavLink = {
@@ -16,19 +16,19 @@ export type SiteNavLink = {
 };
 
 export const SITE_PRODUCTS: SiteNavLink[] = [
-  { id: "devdock", label: "DevDock", href: "/devdock/" },
-  { id: "devmail", label: "DevMail", href: "/devmail/" },
-  { id: "devsql", label: "DevSQL", href: "/devsql/" },
-  { id: "devcheck", label: "DevCheck", href: "/devcheck/" },
+  { id: "devdock", label: "DevDock", href: "/devdock" },
+  { id: "devmail", label: "DevMail", href: "/devmail" },
+  { id: "devsql", label: "DevSQL", href: "/devsql" },
+  { id: "devcheck", label: "DevCheck", href: "/devcheck" },
 ];
 
 export const SITE_PORTAL_LINK: SiteNavLink = {
-  id: "licenses",
-  label: "Licenses",
-  href: "/licenses",
+  id: "login",
+  label: "Login",
+  href: "/login",
 };
 
 export function downloadHrefFor(page: SitePage): string {
-  if (page === "home" || page === "licenses" || page === "admin") return "/#apps";
+  if (page === "home" || page === "login" || page === "admin") return "/#apps";
   return "#download";
 }

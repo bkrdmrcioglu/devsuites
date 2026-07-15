@@ -5,17 +5,25 @@ import {
   decodeSession,
 } from "@/lib/session";
 import { ensureStore, findLicensesByEmail } from "@/lib/store";
-import { LicensesClient } from "./LicensesClient";
+import { githubOAuthConfigured } from "@/lib/githubOAuth";
+import { LoginClient } from "./LoginClient";
 
 export const metadata: Metadata = {
-  title: "Licenses — DevSuites",
-  description: "View your DevSuites product license keys",
+  title: "Login — DevSuites",
+  description: "Sign in to your DevSuites account or create one",
 };
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export default async function LicensesPage() {
+type Props = {
+  searchParams?: Promise<{ error?: string }>;
+};
+
+export default async function LoginPage({ searchParams }: Props) {
+  const params = searchParams ? await searchParams : {};
+  const oauthError = typeof params.error === "string" ? params.error : null;
+
   const jar = await cookies();
   const session = decodeSession(jar.get(SESSION_COOKIE)?.value);
   const email = session?.email ?? null;
@@ -33,10 +41,12 @@ export default async function LicensesPage() {
   }
 
   return (
-    <LicensesClient
+    <LoginClient
       email={email}
       licenses={licenses}
       dbError={dbError}
+      oauthError={oauthError}
+      githubEnabled={githubOAuthConfigured()}
     />
   );
 }
